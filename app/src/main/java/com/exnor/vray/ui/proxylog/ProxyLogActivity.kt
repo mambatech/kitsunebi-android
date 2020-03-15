@@ -1,7 +1,7 @@
-package `fun`.kitsunebi.kitsunebi4android.ui.proxylog
+package com.exnor.vray.ui.proxylog
 
-import `fun`.kitsunebi.kitsunebi4android.R
-import `fun`.kitsunebi.kitsunebi4android.storage.ProxyLogDatabase
+import com.exnor.vray.R
+import com.exnor.vray.storage.ProxyLogDatabase
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem

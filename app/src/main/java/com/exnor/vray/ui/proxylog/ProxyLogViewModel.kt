@@ -1,8 +1,8 @@
-package `fun`.kitsunebi.kitsunebi4android.ui.proxylog
+package com.exnor.vray.ui.proxylog
 
-import `fun`.kitsunebi.kitsunebi4android.storage.Preferences
-import `fun`.kitsunebi.kitsunebi4android.storage.ProxyLog
-import `fun`.kitsunebi.kitsunebi4android.storage.ProxyLogDatabase
+import com.exnor.vray.storage.Preferences
+import com.exnor.vray.storage.ProxyLog
+import com.exnor.vray.storage.ProxyLogDatabase
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData

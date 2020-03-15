@@ -1,8 +1,8 @@
-package `fun`.kitsunebi.kitsunebi4android.service
+package com.exnor.vray.service
 
-import `fun`.kitsunebi.kitsunebi4android.R
-import `fun`.kitsunebi.kitsunebi4android.storage.Preferences
-import `fun`.kitsunebi.kitsunebi4android.ui.StartVpnActivity
+import com.exnor.vray.R
+import com.exnor.vray.storage.Preferences
+import com.exnor.vray.ui.StartVpnActivity
 import android.annotation.TargetApi
 import android.content.BroadcastReceiver
 import android.content.Context

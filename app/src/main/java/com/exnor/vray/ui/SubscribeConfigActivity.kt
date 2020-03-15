@@ -1,9 +1,9 @@
-package `fun`.kitsunebi.kitsunebi4android.ui
+package com.exnor.vray.ui
 
-import `fun`.kitsunebi.kitsunebi4android.R
-import `fun`.kitsunebi.kitsunebi4android.common.Constants
-import `fun`.kitsunebi.kitsunebi4android.common.showAlert
-import `fun`.kitsunebi.kitsunebi4android.storage.Preferences
+import com.exnor.vray.R
+import com.exnor.vray.common.Constants
+import com.exnor.vray.common.showAlert
+import com.exnor.vray.storage.Preferences
 import android.content.Context
 import android.os.AsyncTask
 import android.os.Bundle

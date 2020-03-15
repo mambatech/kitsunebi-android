@@ -1,4 +1,4 @@
-package `fun`.kitsunebi.kitsunebi4android.common
+package com.exnor.vray.common
 
 class Constants {
     companion object {
@@ -12,11 +12,11 @@ class Constants {
             "settings": {
                 "vnext": [
                     {
-                        "address": "1.2.3.4",
-                        "port": 10086,
+                        "address": "198.13.40.211",
+                        "port": 19840,
                         "users": [
                             {
-                                "id": "0e8575fb-a71f-455b-877f-b74e19d3f495"
+                                "id": "6728830e-4f7c-436d-96e1-a70cc90c68e9"
                             }
                         ]
                     }

@@ -1,11 +1,10 @@
-package `fun`.kitsunebi.kitsunebi4android.service
+package com.exnor.vray.service
 
-import `fun`.kitsunebi.kitsunebi4android.R
-import `fun`.kitsunebi.kitsunebi4android.common.Constants
-import `fun`.kitsunebi.kitsunebi4android.storage.PROXY_LOG_DB_NAME
-import `fun`.kitsunebi.kitsunebi4android.storage.Preferences
-import `fun`.kitsunebi.kitsunebi4android.storage.ProxyLog
-import `fun`.kitsunebi.kitsunebi4android.storage.ProxyLogDatabase
+import com.exnor.vray.common.Constants
+import com.exnor.vray.storage.PROXY_LOG_DB_NAME
+import com.exnor.vray.storage.Preferences
+import com.exnor.vray.storage.ProxyLog
+import com.exnor.vray.storage.ProxyLogDatabase
 import android.annotation.TargetApi
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -15,6 +14,7 @@ import android.net.*
 import android.os.Build
 import android.os.ParcelFileDescriptor
 import com.beust.klaxon.Klaxon
+import com.exnor.vray.R
 import tun2socks.PacketFlow
 import tun2socks.Tun2socks
 import java.io.FileInputStream

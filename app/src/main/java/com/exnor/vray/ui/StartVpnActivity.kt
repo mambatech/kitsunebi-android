@@ -1,7 +1,7 @@
-package `fun`.kitsunebi.kitsunebi4android.ui
+package com.exnor.vray.ui
 
-import `fun`.kitsunebi.kitsunebi4android.R
-import `fun`.kitsunebi.kitsunebi4android.service.SimpleVpnService
+import com.exnor.vray.R
+import com.exnor.vray.service.SimpleVpnService
 import android.app.Activity
 import android.content.Intent
 import android.net.VpnService

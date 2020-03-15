@@ -1,6 +1,6 @@
-package `fun`.kitsunebi.kitsunebi4android.ui
+package com.exnor.vray.ui
 
-import `fun`.kitsunebi.kitsunebi4android.R
+import com.exnor.vray.R
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context

@@ -1,8 +1,8 @@
-package `fun`.kitsunebi.kitsunebi4android.ui.proxylog
+package com.exnor.vray.ui.proxylog
 
-import `fun`.kitsunebi.kitsunebi4android.R
-import `fun`.kitsunebi.kitsunebi4android.common.humanReadableByteCount
-import `fun`.kitsunebi.kitsunebi4android.storage.ProxyLog
+import com.exnor.vray.R
+import com.exnor.vray.common.humanReadableByteCount
+import com.exnor.vray.storage.ProxyLog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View

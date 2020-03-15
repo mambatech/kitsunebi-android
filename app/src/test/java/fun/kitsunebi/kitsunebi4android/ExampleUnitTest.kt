@@ -1,4 +1,4 @@
-package `fun`.kitsunebi.kitsunebi4android
+package com.exnor.vray
 
 import org.junit.Test
 

@@ -1,7 +1,7 @@
-package `fun`.kitsunebi.kitsunebi4android.ui.perapp
+package com.exnor.vray.ui.perapp
 
-import `fun`.kitsunebi.kitsunebi4android.R
-import `fun`.kitsunebi.kitsunebi4android.storage.Preferences
+import com.exnor.vray.R
+import com.exnor.vray.storage.Preferences
 import android.Manifest
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager

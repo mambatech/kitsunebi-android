@@ -1,6 +1,6 @@
-package `fun`.kitsunebi.kitsunebi4android.storage
+package com.exnor.vray.storage
 
-import `fun`.kitsunebi.kitsunebi4android.R
+import com.exnor.vray.R
 import android.content.Context
 
 open class Preferences {

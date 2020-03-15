@@ -1,4 +1,4 @@
-package `fun`.kitsunebi.kitsunebi4android.common
+package com.exnor.vray.common
 
 import android.app.AlertDialog
 import android.content.Context

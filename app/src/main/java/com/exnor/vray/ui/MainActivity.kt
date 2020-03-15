@@ -1,13 +1,15 @@
-package `fun`.kitsunebi.kitsunebi4android.ui
+package com.exnor.vray.ui
 
-import `fun`.kitsunebi.kitsunebi4android.R
-import `fun`.kitsunebi.kitsunebi4android.common.Constants
-import `fun`.kitsunebi.kitsunebi4android.common.showAlert
-import `fun`.kitsunebi.kitsunebi4android.service.SimpleVpnService
-import `fun`.kitsunebi.kitsunebi4android.storage.Preferences
-import `fun`.kitsunebi.kitsunebi4android.ui.proxylog.ProxyLogActivity
-import `fun`.kitsunebi.kitsunebi4android.ui.settings.SettingsActivity
+import com.exnor.vray.R
+import com.exnor.vray.common.Constants
+import com.exnor.vray.common.showAlert
+import com.exnor.vray.service.SimpleVpnService
+import com.exnor.vray.storage.Preferences
+import com.exnor.vray.ui.proxylog.ProxyLogActivity
+import com.exnor.vray.ui.settings.SettingsActivity
 import android.app.Activity
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -26,8 +28,7 @@ import org.json.JSONObject
 import android.view.MotionEvent
 import android.view.View.OnTouchListener
 import android.view.View
-
-
+import androidx.core.app.NotificationCompat
 
 
 class MainActivity : AppCompatActivity() {
@@ -37,8 +38,8 @@ class MainActivity : AppCompatActivity() {
     private var stopping = false
     private lateinit var configString: String
 
-//    val mNotificationId = 1
-    //    var mNotificationManager: NotificationManager? = null
+    val mNotificationId = 1
+        var mNotificationManager: NotificationManager? = null
 
     val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -47,13 +48,13 @@ class MainActivity : AppCompatActivity() {
                     running = false
                     stopping = false
                     fab.setImageResource(android.R.drawable.ic_media_play)
-//                    mNotificationManager?.cancel(mNotificationId)
+                    mNotificationManager?.cancel(mNotificationId)
                 }
                 "vpn_started" -> {
                     running = true
                     starting = false
                     fab.setImageResource(android.R.drawable.ic_media_pause)
-//                    startNotification()
+                    startNotification()
                 }
                 "vpn_start_err" -> {
                     running = false
@@ -102,7 +103,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-//        mNotificationManager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        mNotificationManager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         registerReceiver(broadcastReceiver, IntentFilter("vpn_stopped"))
         registerReceiver(broadcastReceiver, IntentFilter("vpn_started"))
@@ -223,23 +224,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    private fun startNotification() {
-//        // Build Notification , setOngoing keeps the notification always in status bar
-//        val mBuilder = NotificationCompat.Builder(this, getString(R.string.notification_channel_id))
-//                .setContentTitle("Kitsunebi")
-//                .setContentText("Touch to open the app")
-//                .setSmallIcon(R.drawable.notification_icon_background)
-//                .setWhen(System.currentTimeMillis())
-//                .setOngoing(true)
-//
-//        // Create pending intent, mention the Activity which needs to be
-//        //triggered when user clicks on notification(StopScript.class in this case)
-//        val contentIntent = PendingIntent.getActivity(this, 0,
-//                Intent(this, MainActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT)
-//
-//        mBuilder.setContentIntent(contentIntent)
-//
-//        // Builds the notification and issues it.
-//        mNotificationManager?.notify(mNotificationId, mBuilder.build())
-//    }
+    private fun startNotification() {
+        // Build Notification , setOngoing keeps the notification always in status bar
+        val mBuilder = NotificationCompat.Builder(this, getString(R.string.notification_channel_id))
+                .setContentTitle("Kitsunebi")
+                .setContentText("Touch to open the app")
+                .setSmallIcon(R.drawable.notification_icon_background)
+                .setWhen(System.currentTimeMillis())
+                .setOngoing(true)
+
+        // Create pending intent, mention the Activity which needs to be
+        //triggered when user clicks on notification(StopScript.class in this case)
+        val contentIntent = PendingIntent.getActivity(this, 0,
+                Intent(this, MainActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT)
+
+        mBuilder.setContentIntent(contentIntent)
+
+        // Builds the notification and issues it.
+        mNotificationManager?.notify(mNotificationId, mBuilder.build())
+    }
 }

@@ -1,6 +1,6 @@
-package `fun`.kitsunebi.kitsunebi4android.ui.proxylog
+package com.exnor.vray.ui.proxylog
 
-import `fun`.kitsunebi.kitsunebi4android.storage.ProxyLog
+import com.exnor.vray.storage.ProxyLog
 import androidx.recyclerview.widget.DiffUtil
 
 class ProxyLogDiffCallback : DiffUtil.ItemCallback<ProxyLog>() {

@@ -1,6 +1,6 @@
-package `fun`.kitsunebi.kitsunebi4android.storage
+package com.exnor.vray.storage
 
-import `fun`.kitsunebi.kitsunebi4android.common.SingletonHolder
+import com.exnor.vray.common.SingletonHolder
 import android.content.Context
 import androidx.paging.DataSource
 import androidx.room.*

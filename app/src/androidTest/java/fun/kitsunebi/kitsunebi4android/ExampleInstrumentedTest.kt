@@ -1,4 +1,4 @@
-package `fun`.kitsunebi.kitsunebi4android
+package com.exnor.vray
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
