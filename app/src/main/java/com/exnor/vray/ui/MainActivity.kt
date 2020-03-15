@@ -1,13 +1,8 @@
 package com.exnor.vray.ui
 
-import com.exnor.vray.R
-import com.exnor.vray.common.Constants
-import com.exnor.vray.common.showAlert
-import com.exnor.vray.service.SimpleVpnService
-import com.exnor.vray.storage.Preferences
-import com.exnor.vray.ui.proxylog.ProxyLogActivity
-import com.exnor.vray.ui.settings.SettingsActivity
+import android.annotation.TargetApi
 import android.app.Activity
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
@@ -16,19 +11,26 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.net.VpnService
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
+import com.exnor.vray.R
+import com.exnor.vray.common.Constants
+import com.exnor.vray.common.showAlert
+import com.exnor.vray.service.SimpleVpnService
+import com.exnor.vray.storage.Preferences
+import com.exnor.vray.ui.proxylog.ProxyLogActivity
+import com.exnor.vray.ui.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.json.JSONException
 import org.json.JSONObject
-import android.view.MotionEvent
-import android.view.View.OnTouchListener
-import android.view.View
-import androidx.core.app.NotificationCompat
 
 
 class MainActivity : AppCompatActivity() {
@@ -38,8 +40,10 @@ class MainActivity : AppCompatActivity() {
     private var stopping = false
     private lateinit var configString: String
 
-    val mNotificationId = 1
-        var mNotificationManager: NotificationManager? = null
+    val mNotificationId = 100
+    private val NOTIFICATION_CHANNEL_ID = "scene_channel"
+    private val NOTIFICATION_CHANNEL_NAME = "scene_notification"
+    var mNotificationManager: NotificationManager? = null
 
     val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -54,7 +58,9 @@ class MainActivity : AppCompatActivity() {
                     running = true
                     starting = false
                     fab.setImageResource(android.R.drawable.ic_media_pause)
-                    startNotification()
+                    fab.post {
+                        startNotification()
+                    }
                 }
                 "vpn_start_err" -> {
                     running = false
@@ -226,12 +232,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun startNotification() {
         // Build Notification , setOngoing keeps the notification always in status bar
-        val mBuilder = NotificationCompat.Builder(this, getString(R.string.notification_channel_id))
-                .setContentTitle("Kitsunebi")
-                .setContentText("Touch to open the app")
-                .setSmallIcon(R.drawable.notification_icon_background)
+        val mBuilder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+                .setContentTitle("ExNor")
+                .setContentText("Enjoy it")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setSmallIcon(R.mipmap.ic_kitsunebi)
                 .setWhen(System.currentTimeMillis())
                 .setOngoing(true)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mNotificationManager?.createNotificationChannel(createChannel(this))
+        }
 
         // Create pending intent, mention the Activity which needs to be
         //triggered when user clicks on notification(StopScript.class in this case)
@@ -241,6 +252,21 @@ class MainActivity : AppCompatActivity() {
         mBuilder.setContentIntent(contentIntent)
 
         // Builds the notification and issues it.
+        Log.e("sentNotification","sent it...")
         mNotificationManager?.notify(mNotificationId, mBuilder.build())
+    }
+
+    @TargetApi(26)
+    fun createChannel(context: Context): NotificationChannel { //创建 通知通道
+        val channel = NotificationChannel(
+                NOTIFICATION_CHANNEL_ID,
+                NOTIFICATION_CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_HIGH)
+
+        channel.enableLights(true) //是否在桌面icon右上角展示小红点
+        channel.lightColor = ContextCompat.getColor(context, R.color.colorAccent) //小红点颜色
+        channel.enableVibration(false)
+        channel.setShowBadge(true) //是否在久按桌面图标时显示此渠道的通知
+        return channel
     }
 }
