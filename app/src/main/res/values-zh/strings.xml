@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">ExNorVpn</string>
+
+    <string name="state_stopped">停止</string>
+    <string name="state_connecting">连接中……</string>
+    <string name="state_connected">已连接</string>
+    <string name="str_japan">日本</string>
+    <string name="str_singapore">新加坡</string>
+    <string name="str_just_connecting">正在连接……</string>
+    <string name="str_stopped_first">请先断开连接</string>
+</resources>

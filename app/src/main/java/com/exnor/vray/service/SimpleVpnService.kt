@@ -1,7 +1,6 @@
 package com.exnor.vray.service
 
 import com.exnor.vray.common.Constants
-import com.exnor.vray.storage.PROXY_LOG_DB_NAME
 import com.exnor.vray.storage.Preferences
 import com.exnor.vray.storage.ProxyLog
 import com.exnor.vray.storage.ProxyLogDatabase
@@ -15,6 +14,7 @@ import android.os.Build
 import android.os.ParcelFileDescriptor
 import com.beust.klaxon.Klaxon
 import com.exnor.vray.R
+import com.exnor.vray.helper.VpnConnectMgr
 import tun2socks.PacketFlow
 import tun2socks.Tun2socks
 import java.io.FileInputStream
@@ -161,7 +161,7 @@ open class SimpleVpnService : VpnService() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        configString = Preferences.getString(applicationContext, Constants.PREFERENCE_CONFIG_KEY, Constants.DEFAULT_CONFIG)
+        configString = VpnConnectMgr.curVpnConfig
 
         bgThread = thread(start = true) {
             val config = try { Klaxon().parse<Config>(configString) } catch (e: Exception) {

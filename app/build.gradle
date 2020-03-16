@@ -48,6 +48,9 @@ dependencies {
 
     implementation "androidx.lifecycle:lifecycle-extensions:2.1.0-alpha01"
     kapt "androidx.lifecycle:lifecycle-compiler:2.1.0-alpha01"
+
+    //状态栏颜色适配
+    implementation 'com.gyf.immersionbar:immersionbar:3.0.0-beta05'
 }
 
 repositories {

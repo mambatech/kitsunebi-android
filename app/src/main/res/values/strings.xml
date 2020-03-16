@@ -15,4 +15,13 @@
     <string name="disallowed_list">Disallowed list</string>
     <string name="sniffing">sniffing</string>
     <string name="inbound_tag">inbound_tag</string>
+
+
+    <string name="state_stopped">Stopped</string>
+    <string name="state_connecting">Connecting……</string>
+    <string name="state_connected">Connected</string>
+    <string name="str_japan">Japan</string>
+    <string name="str_singapore">Singapore</string>
+    <string name="str_just_connecting">Vpn is Connecting……</string>
+    <string name="str_stopped_first">Please stop connecting first</string>
 </resources>
