@@ -19,6 +19,10 @@ android {
         versionName "1.0.0"
         project.ext.set("archivesBaseName", name + "_" + version)
         multiDexEnabled true
+
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a"
+        }
     }
 
     signingConfigs {
@@ -40,8 +44,6 @@ android {
         }
         debug {
             signingConfig signingConfigs.myConfig
-            applicationIdSuffix 'debug'
-            versionNameSuffix 'debug'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -61,6 +63,11 @@ android {
 }
 
 dependencies {
+    //友盟
+    implementation  'com.umeng.umsdk:analytics:8.0.0'
+    implementation  'com.umeng.umsdk:common:2.0.0'
+    implementation 'com.umeng.umsdk:utdid:1.1.5.3'
+
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
@@ -84,6 +91,7 @@ dependencies {
 }
 
 repositories {
+    mavenCentral()
     flatDir {
         dirs 'libs'
     }
