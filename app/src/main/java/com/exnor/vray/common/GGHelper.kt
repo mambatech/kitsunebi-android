@@ -25,17 +25,11 @@ object GGHelper {
 
     val tag = GGHelper::class.java.simpleName
     val APP_ADMOB_KEY = "ca-app-pub-7094078041880308~1863765640"
-    val GG_EXIT_APP_KEY = if (BuildConfig.DEBUG) {
-        "ca-app-pub-3940256099942544/1033173712"
-    } else {
-        "ca-app-pub-8917831695584667/6069290889"
-    }
+    val GG_EXIT_APP_KEY = "ca-app-pub-8917831695584667/6069290889"
+    val GG_POP_TEST_KEY = "ca-app-pub-3940256099942544/1033173712"
 
-    val GG_MAIN_PAGE_NATIVE = if (BuildConfig.DEBUG){
-        "ca-app-pub-3940256099942544/2247696110"
-    }else{
-        "ca-app-pub-8917831695584667/1746902493"
-    }
+    val GG_MAIN_PAGE_NATIVE = "ca-app-pub-8917831695584667/1746902493"
+    val GG_NATIVE_TEST = "ca-app-pub-3940256099942544/2247696110"
 
     private var exitInterstitialAd: InterstitialAd? = null
     private var mainPageAdLoader: AdLoader? = null
@@ -90,7 +84,7 @@ object GGHelper {
                 }
                 .withAdListener(object : AdListener() {
                     override fun onAdFailedToLoad(errorCode: Int) {
-
+                        Log.e(tag,"onNativeAdLoadedFailed:$errorCode")
                     }
 
                     override fun onAdLoaded() {
