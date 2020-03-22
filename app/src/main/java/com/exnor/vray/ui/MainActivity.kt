@@ -21,11 +21,13 @@ import com.exnor.vray.R
 import com.exnor.vray.bean.ConnectStatus
 import com.exnor.vray.bean.VpnItemBean
 import com.exnor.vray.common.Constants
+import com.exnor.vray.common.GGHelper
 import com.exnor.vray.common.showAlert
 import com.exnor.vray.helper.VpnConnectMgr
 import com.exnor.vray.service.SimpleVpnService
 import com.exnor.vray.storage.Preferences
 import com.exnor.vray.ui.adapter.VpnListAdapter
+import com.google.android.gms.ads.formats.UnifiedNativeAdView
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -47,12 +49,14 @@ class MainActivity : AppCompatActivity(), VpnListAdapter.VpnItemListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        GGHelper.loadExitGG(this)
         ImmersionBar.with(this)
                 .fitsSystemWindows(true)
                 .statusBarColor(R.color.theme_green)
                 .init()
 
         setSupportActionBar(toolbar)
+        loadGGAndShow()
 
         mNotificationManager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         registerReceiver()
@@ -76,6 +80,12 @@ class MainActivity : AppCompatActivity(), VpnListAdapter.VpnItemListener {
                 sendBroadcast(Intent("stop_vpn"))
             }
         }
+    }
+
+    private fun loadGGAndShow(){
+        val adView = layoutInflater
+                .inflate(R.layout.template_main_page_ad, null) as UnifiedNativeAdView
+        GGHelper.loadAndShowMainPageAd(this,adView,fl_ad)
     }
 
     override fun onItemClicked(position: Int) {
@@ -148,6 +158,11 @@ class MainActivity : AppCompatActivity(), VpnListAdapter.VpnItemListener {
     override fun onDestroy() {
         super.onDestroy()
         unregisterReceiver(broadcastReceiver)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        GGHelper.showExitGG()
     }
 
     private fun startNotification() {

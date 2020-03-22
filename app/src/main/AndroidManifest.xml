@@ -27,6 +27,10 @@
             </intent-filter>
         </activity>
 
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-8917831695584667~6260862575"/>
+
         <activity
             android:name=".ui.proxylog.ProxyLogActivity"
             android:label="Proxy Logs"

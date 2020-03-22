@@ -2,6 +2,7 @@ package com.exnor.vray;
 
 import android.app.Application;
 
+import com.google.android.gms.ads.MobileAds;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 
@@ -19,6 +20,7 @@ public class MApplication extends Application {
         //统计SDK是否支持采集在子进程中打点的自定义事件，默认不支持
         //UMConfigure.setProcessEvent(true);//支持多进程打点
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
+        MobileAds.initialize(this);
 
     }
 }
