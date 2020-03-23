@@ -24,7 +24,6 @@ created by edison 2020/3/22
 object GGHelper {
 
     val tag = GGHelper::class.java.simpleName
-    val APP_ADMOB_KEY = "ca-app-pub-7094078041880308~1863765640"
     val GG_EXIT_APP_KEY = "ca-app-pub-8917831695584667/6069290889"
 //    val GG_EXIT_APP_KEY = "ca-app-pub-3940256099942544/1033173712" //测试
 
