@@ -28,4 +28,5 @@
     <string name="str_connect">Connect</string>
     <string name="would_you_give_us_5_stars">Enjoy using ExNorVpn?</string>
     <string name="select_mailbox">Please select mailbox</string>
+    <string name="mail_title">Feedback</string>
 </resources>

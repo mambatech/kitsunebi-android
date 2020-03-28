@@ -271,7 +271,9 @@ class MainActivity : AppCompatActivity(), VpnListAdapter.VpnItemListener {
                         if (starLevel <= 3) {
                             val intent = Intent(Intent.ACTION_SEND)
                             intent.type = "message/rfc822" // 设置邮件格式
-                            intent.putExtra(Intent.EXTRA_EMAIL, "mambatech2020@gmail.com") // 接收人
+                            val mail = arrayOf("mambatech2020@gmail.com")
+                            intent.putExtra(Intent.EXTRA_EMAIL, mail)
+                            intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.mail_title))
                             startActivity(Intent.createChooser(intent, getString(R.string.select_mailbox)))
                         } else {
                             val intent = Intent()
