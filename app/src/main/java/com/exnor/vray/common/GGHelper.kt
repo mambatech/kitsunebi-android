@@ -15,6 +15,9 @@ import com.google.android.gms.ads.formats.MediaView
 import com.google.android.gms.ads.formats.NativeAdOptions
 import com.google.android.gms.ads.formats.UnifiedNativeAd
 import com.google.android.gms.ads.formats.UnifiedNativeAdView
+import com.google.android.gms.ads.reward.RewardItem
+import com.google.android.gms.ads.reward.RewardedVideoAd
+import com.google.android.gms.ads.reward.RewardedVideoAdListener
 import java.util.*
 
 
@@ -30,9 +33,47 @@ object GGHelper {
     val GG_MAIN_PAGE_NATIVE = "ca-app-pub-8917831695584667/1746902493"
 //    val GG_MAIN_PAGE_NATIVE = "ca-app-pub-3940256099942544/2247696110"   //测试
 
+    val GG_REWARD = "ca-app-pub-8917831695584667/5012704988"
+//    val GG_REWARD = "ca-app-pub-3940256099942544/5224354917" //测试
+
     private var exitInterstitialAd: InterstitialAd? = null
     private var mainPageAdLoader: AdLoader? = null
     private var currentNativeAd: UnifiedNativeAd? = null
+    private var rewardedVideoAd: RewardedVideoAd? = null
+
+    fun loadRewardVideoGG(context: Context) {
+        if (rewardedVideoAd == null) {
+            rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(context)
+
+            rewardedVideoAd!!.rewardedVideoAdListener = object : RewardedVideoAdListener{
+                override fun onRewardedVideoAdClosed() {
+                    loadRewardVideoGG(context)
+                }
+
+                override fun onRewardedVideoAdLeftApplication() {}
+
+                override fun onRewardedVideoAdLoaded() {}
+
+                override fun onRewardedVideoAdOpened() {}
+
+                override fun onRewardedVideoCompleted() {}
+
+                override fun onRewarded(p0: RewardItem?) {}
+
+                override fun onRewardedVideoStarted() {}
+
+                override fun onRewardedVideoAdFailedToLoad(p0: Int) {}
+            }
+        }
+
+        rewardedVideoAd?.loadAd(GG_REWARD, AdRequest.Builder().build())
+    }
+
+    fun showRewardVideoGG(){
+        if (rewardedVideoAd?.isLoaded == true){
+            rewardedVideoAd?.show()
+        }
+    }
 
     fun loadExitGG(context: Context){
         exitInterstitialAd = InterstitialAd(context)

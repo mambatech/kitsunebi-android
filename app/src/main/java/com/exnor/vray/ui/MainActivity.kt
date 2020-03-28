@@ -80,12 +80,18 @@ class MainActivity : AppCompatActivity(), VpnListAdapter.VpnItemListener {
                 sendBroadcast(Intent("stop_vpn"))
             }
         }
+
+        watch_video.setOnClickListener {
+            GGHelper.showRewardVideoGG()
+        }
     }
 
     private fun loadGGAndShow(){
         val adView = layoutInflater
                 .inflate(R.layout.template_main_page_ad, null) as UnifiedNativeAdView
         GGHelper.loadAndShowMainPageAd(this,adView,fl_ad)
+
+        GGHelper.loadRewardVideoGG(this)
     }
 
     override fun onItemClicked(position: Int) {

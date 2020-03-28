@@ -24,4 +24,6 @@
     <string name="str_singapore">Singapore</string>
     <string name="str_just_connecting">Vpn is Connecting……</string>
     <string name="str_stopped_first">Please stop connecting first</string>
+    <string name="watch_video">Watch Ad Video</string>
+    <string name="str_connect">Connect</string>
 </resources>

@@ -8,4 +8,7 @@
     <string name="str_singapore">新加坡</string>
     <string name="str_just_connecting">正在连接……</string>
     <string name="str_stopped_first">请先断开连接</string>
+    <string name="watch_video">看广告视频</string>
+    <string name="str_connect">连接</string>
+
 </resources>
