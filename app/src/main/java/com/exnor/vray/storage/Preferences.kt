@@ -2,20 +2,24 @@ package com.exnor.vray.storage
 
 import com.exnor.vray.R
 import android.content.Context
+import com.exnor.vray.MApplication
 
 open class Preferences {
     companion object {
-        fun putString(context: Context, k: String, v: String) {
-            val sharedPref = context.getSharedPreferences(context.getString(R.string.config_preference), Context.MODE_PRIVATE)
+        const val KEY_CONNECT_TIME = "connect_time"
+
+        fun putString(k: String, v: String) {
+            val sharedPref = MApplication.sIns.getSharedPreferences(
+                    MApplication.sIns.getString(R.string.config_preference), Context.MODE_PRIVATE)
             with(sharedPref.edit()) {
                 putString(k, v)
-                commit()
+                apply()
             }
         }
 
-        fun getString(context: Context, k: String, default: String?): String {
-            val sharedPref = context.getSharedPreferences(
-                    context.getString(R.string.config_preference), Context.MODE_PRIVATE)
+        fun getString(k: String, default: String?): String {
+            val sharedPref = MApplication.sIns.getSharedPreferences(
+                    MApplication.sIns.getString(R.string.config_preference), Context.MODE_PRIVATE)
             if (default != null) {
                 return sharedPref.getString(k, default!!)
             } else {
@@ -23,17 +27,18 @@ open class Preferences {
             }
         }
 
-        fun putBool(context: Context, k: String, v: Boolean) {
-            val sharedPref = context.getSharedPreferences(context.getString(R.string.config_preference), Context.MODE_PRIVATE)
+        fun putBool(k: String, v: Boolean) {
+            val sharedPref = MApplication.sIns.getSharedPreferences(
+                    MApplication.sIns.getString(R.string.config_preference), Context.MODE_PRIVATE)
             with(sharedPref.edit()) {
                 putBoolean(k, v)
-                commit()
+                apply()
             }
         }
 
-        fun getBool(context: Context, k: String, default: Boolean?): Boolean {
-            val sharedPref = context.getSharedPreferences(
-                    context.getString(R.string.config_preference), Context.MODE_PRIVATE)
+        fun getBool(k: String, default: Boolean?): Boolean {
+            val sharedPref = MApplication.sIns.getSharedPreferences(
+                    MApplication.sIns.getString(R.string.config_preference), Context.MODE_PRIVATE)
             if (default != null) {
                 return sharedPref.getBoolean(k, default!!)
             } else {
@@ -41,17 +46,17 @@ open class Preferences {
             }
         }
 
-        fun putInt(context: Context, k: String, v: Int) {
-            val sharedPref = context.getSharedPreferences(context.getString(R.string.config_preference), Context.MODE_PRIVATE)
+        fun putInt(k: String, v: Int) {
+            val sharedPref = MApplication.sIns.getSharedPreferences(MApplication.sIns.getString(R.string.config_preference), Context.MODE_PRIVATE)
             with(sharedPref.edit()) {
                 putInt(k, v)
-                commit()
+                apply()
             }
         }
 
-        fun getInt(context: Context, k: String, default: Int?): Int {
-            val sharedPref = context.getSharedPreferences(
-                    context.getString(R.string.config_preference), Context.MODE_PRIVATE)
+        fun getInt(k: String, default: Int?): Int {
+            val sharedPref = MApplication.sIns.getSharedPreferences(
+                    MApplication.sIns.getString(R.string.config_preference), Context.MODE_PRIVATE)
             if (default != null) {
                 return sharedPref.getInt(k, default!!)
             } else {

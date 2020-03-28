@@ -44,7 +44,7 @@ class SubscribeConfigActivity : AppCompatActivity() {
 
         override fun onPostExecute(result: String?) {
             if (result != null) {
-                Preferences.putString(ctx, Constants.PREFERENCE_CONFIG_KEY, result)
+                Preferences.putString(Constants.PREFERENCE_CONFIG_KEY, result)
                 showAlert(ctx, "Configuration updated!")
             }
         }
@@ -56,11 +56,11 @@ class SubscribeConfigActivity : AppCompatActivity() {
         subUrl = findViewById<EditText>(R.id.sub_url)
         subBtn = findViewById<Button>(R.id.sub_btn)
 
-        subUrl.setText(Preferences.getString(this, Constants.SUBSCRIBE_CONFIG_URL_KEY, ""))
+        subUrl.setText(Preferences.getString(Constants.SUBSCRIBE_CONFIG_URL_KEY, ""))
 
         subBtn.setOnClickListener { view ->
             val url = subUrl.text.toString()
-            Preferences.putString(this, Constants.SUBSCRIBE_CONFIG_URL_KEY, url)
+            Preferences.putString(Constants.SUBSCRIBE_CONFIG_URL_KEY, url)
             RetrieveConfigurationTask(this).execute(url)
         }
     }

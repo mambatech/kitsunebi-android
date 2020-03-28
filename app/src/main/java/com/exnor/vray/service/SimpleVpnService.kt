@@ -102,7 +102,7 @@ open class SimpleVpnService : VpnService() {
         outputStream = null
         running = false
         sendBroadcast(Intent("vpn_stopped"))
-        Preferences.putBool(applicationContext, getString(R.string.vpn_is_running), false)
+        Preferences.putBool( getString(R.string.vpn_is_running), false)
         stopSelf()
     }
 
@@ -193,7 +193,7 @@ open class SimpleVpnService : VpnService() {
                 return@thread
             }
 
-            val localDns = Preferences.getString(applicationContext, getString(R.string.local_dns), "223.5.5.5")
+            val localDns = Preferences.getString( getString(R.string.local_dns), "223.5.5.5")
 
             val builder = Builder().setSession("Kitsunebi")
                     .setMtu(1500)
@@ -201,19 +201,19 @@ open class SimpleVpnService : VpnService() {
                     .addDnsServer(localDns)
                     .addRoute("0.0.0.0", 0)
 
-            val isEnablePerAppVpn = Preferences.getBool(applicationContext, getString(R.string.is_enable_per_app_vpn), null)
+            val isEnablePerAppVpn = Preferences.getBool( getString(R.string.is_enable_per_app_vpn), null)
             @TargetApi(21)
             if (isEnablePerAppVpn) {
-                val perAppMode = Preferences.getString(applicationContext, getString(R.string.per_app_mode), null)
+                val perAppMode = Preferences.getString( getString(R.string.per_app_mode), null)
                 when (Integer.parseInt(perAppMode)) {
                     0 -> {
-                        val allowedAppList = Preferences.getString(applicationContext, getString(R.string.per_app_allowed_app_list), null)
+                        val allowedAppList = Preferences.getString( getString(R.string.per_app_allowed_app_list), null)
                         for (packageName in allowedAppList.split(",")) {
                             builder.addAllowedApplication(packageName)
                         }
                     }
                     1 -> {
-                        val disallowedAppList = Preferences.getString(applicationContext, getString(R.string.per_app_disallowed_app_list), null)
+                        val disallowedAppList = Preferences.getString( getString(R.string.per_app_disallowed_app_list), null)
                         for (packageName in disallowedAppList.split(",")) {
                             builder.addDisallowedApplication(packageName)
                         }
@@ -246,7 +246,7 @@ open class SimpleVpnService : VpnService() {
             val flow = Flow(outputStream)
             val service = Service(this)
             var dbService: DBService? = null
-            val enableProxyLogging = Preferences.getBool(applicationContext, getString(R.string.is_enable_proxy_logging), null)
+            val enableProxyLogging = Preferences.getBool( getString(R.string.is_enable_proxy_logging), null)
             if (enableProxyLogging) {
                 dbService = DBService(ProxyLogDatabase.getInstance(applicationContext))
             }
@@ -277,7 +277,7 @@ open class SimpleVpnService : VpnService() {
 
             ProxyLogDatabase.getInstance(applicationContext).proxyLogDao().getAllCount()
 
-            var sniffing = Preferences.getString(applicationContext, getString(R.string.sniffing), "http,tls")
+            var sniffing = Preferences.getString( getString(R.string.sniffing), "http,tls")
             // Just ensure no whitespaces in the the string.
             val sniffingList = sniffing.split(",")
             var sniffings = ArrayList<String>()
@@ -286,7 +286,7 @@ open class SimpleVpnService : VpnService() {
             }
             sniffing = sniffings.joinToString(",")
 
-            val inboundTag = Preferences.getString(applicationContext, getString(R.string.inbound_tag), "tun2socks")
+            val inboundTag = Preferences.getString( getString(R.string.inbound_tag), "tun2socks")
 
             Tun2socks.setLocalDNS("$localDns:53")
             val ret = Tun2socks.startV2Ray(flow, service, dbService, configString.toByteArray(), inboundTag, sniffing, filesDir.absolutePath)
@@ -297,7 +297,7 @@ open class SimpleVpnService : VpnService() {
             }
 
             sendBroadcast(Intent("vpn_started"))
-            Preferences.putBool(applicationContext, getString(R.string.vpn_is_running), true)
+            Preferences.putBool( getString(R.string.vpn_is_running), true)
 
             running = true
             handlePackets()

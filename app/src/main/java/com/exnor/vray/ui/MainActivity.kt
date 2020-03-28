@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.Uri
 import android.net.VpnService
 import android.os.Build
 import android.os.Bundle
@@ -27,6 +28,7 @@ import com.exnor.vray.helper.VpnConnectMgr
 import com.exnor.vray.service.SimpleVpnService
 import com.exnor.vray.storage.Preferences
 import com.exnor.vray.ui.adapter.VpnListAdapter
+import com.exnor.vray.ui.dialog.RateDialog
 import com.google.android.gms.ads.formats.UnifiedNativeAdView
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_main.*
@@ -45,6 +47,7 @@ class MainActivity : AppCompatActivity(), VpnListAdapter.VpnItemListener {
     var mNotificationManager: NotificationManager? = null
     private var vpnAdapter: VpnListAdapter? = null
     private var curSelectedPosition = 0
+    private var ratingDialog: RateDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -216,6 +219,7 @@ class MainActivity : AppCompatActivity(), VpnListAdapter.VpnItemListener {
                     fab.setImageResource(android.R.drawable.ic_media_pause)
                     fab.post {
                         startNotification()
+                        showRateDialog()
                     }
                 }
                 "vpn_start_err" -> {
@@ -251,10 +255,41 @@ class MainActivity : AppCompatActivity(), VpnListAdapter.VpnItemListener {
                 "pong" -> {
                     fab.setImageResource(android.R.drawable.ic_media_pause)
                     running = true
-                    Preferences.putBool(applicationContext, getString(R.string.vpn_is_running), true)
+                    Preferences.putBool( getString(R.string.vpn_is_running), true)
                 }
             }
         }
+    }
+
+    private fun showRateDialog(){
+        val connectTimes = Preferences.getInt(Preferences.KEY_CONNECT_TIME, 1)
+        if (connectTimes == 2 || connectTimes == 4) {
+
+            if (ratingDialog == null) {
+                ratingDialog = RateDialog(this, RateDialog.OnStarListener { starLevel ->
+                    try {
+                        if (starLevel <= 3) {
+                            val intent = Intent(Intent.ACTION_SEND)
+                            intent.type = "message/rfc822" // 设置邮件格式
+                            intent.putExtra(Intent.EXTRA_EMAIL, "mambatech2020@gmail.com") // 接收人
+                            startActivity(Intent.createChooser(intent, getString(R.string.select_mailbox)))
+                        } else {
+                            val intent = Intent()
+                            intent.action = Intent.ACTION_VIEW
+                            intent.data = Uri.parse("http://play.google.com/store/apps/details?id=$packageName")
+                            startActivity(intent)
+                        }
+                    } catch (e: Exception) {
+
+                    }
+
+                })
+            }
+
+            ratingDialog?.show()
+        }
+
+        Preferences.putInt(Preferences.KEY_CONNECT_TIME,connectTimes + 1)
     }
 
     @TargetApi(26)

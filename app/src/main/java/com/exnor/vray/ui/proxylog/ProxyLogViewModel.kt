@@ -19,7 +19,7 @@ class ProxyLogViewModel constructor(application: Application)
         lateinit var factory: DataSource.Factory<Int, ProxyLog>
 
         // TODO using global constant string
-        val isHideDns = Preferences.getBool(getApplication(), "is_hide_dns_logs", null)
+        val isHideDns = Preferences.getBool( "is_hide_dns_logs", null)
         if (isHideDns) {
             factory = ProxyLogDatabase.getInstance(getApplication()).proxyLogDao().getAllNonDnsPaged()
         } else {

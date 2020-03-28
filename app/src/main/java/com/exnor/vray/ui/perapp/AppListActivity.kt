@@ -64,11 +64,11 @@ class AppListActivity : AppCompatActivity() {
 
             when (perAppMode) {
                 0 -> {
-                    val allowedAppList = Preferences.getString(applicationContext, getString(R.string.per_app_allowed_app_list), null)
+                    val allowedAppList = Preferences.getString( getString(R.string.per_app_allowed_app_list), null)
                     selectedList.addAll(ArrayList(allowedAppList.split(",")))
                 }
                 1 -> {
-                    val disallowedAppList = Preferences.getString(applicationContext, getString(R.string.per_app_disallowed_app_list), null)
+                    val disallowedAppList = Preferences.getString( getString(R.string.per_app_disallowed_app_list), null)
                     selectedList.addAll(ArrayList(disallowedAppList.split(",")))
                 }
                 else -> {
@@ -100,10 +100,10 @@ class AppListActivity : AppCompatActivity() {
                 val selectedAppList = selectedList.joinToString(",")
                 when (perAppMode) {
                     0 -> {
-                        Preferences.putString(applicationContext, getString(R.string.per_app_allowed_app_list), selectedAppList)
+                        Preferences.putString(getString(R.string.per_app_allowed_app_list), selectedAppList)
                     }
                     1 -> {
-                        Preferences.putString(applicationContext, getString(R.string.per_app_disallowed_app_list), selectedAppList)
+                        Preferences.putString( getString(R.string.per_app_disallowed_app_list), selectedAppList)
                     }
                     else -> {
                     }

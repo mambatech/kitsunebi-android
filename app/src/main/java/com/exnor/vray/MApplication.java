@@ -11,9 +11,12 @@ import com.umeng.commonsdk.UMConfigure;
  */
 public class MApplication extends Application {
 
+    public static MApplication sIns;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        sIns = this;
         UMConfigure.setLogEnabled(BuildConfig.DEBUG);
         // init umeng sdk
         UMConfigure.init(this, "5e71efe2167eddc4420000e8", "umeng", UMConfigure.DEVICE_TYPE_PHONE, null);

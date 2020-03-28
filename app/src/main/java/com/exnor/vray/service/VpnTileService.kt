@@ -31,7 +31,7 @@ class VpnTileService : TileService() {
                 }
                 "pong" -> {
                     qsTile.state = Tile.STATE_ACTIVE
-                    Preferences.putBool(applicationContext, getString(R.string.vpn_is_running), true)
+                    Preferences.putBool( getString(R.string.vpn_is_running), true)
                 }
                 else -> {
                     qsTile.state = Tile.STATE_INACTIVE
