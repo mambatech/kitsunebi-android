@@ -30,11 +30,13 @@ import com.exnor.vray.storage.Preferences
 import com.exnor.vray.ui.adapter.VpnListAdapter
 import com.exnor.vray.ui.dialog.RateDialog
 import com.google.android.gms.ads.formats.UnifiedNativeAdView
+import com.google.android.gms.ads.reward.RewardItem
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity(), VpnListAdapter.VpnItemListener {
+class MainActivity : AppCompatActivity(),
+        VpnListAdapter.VpnItemListener,GGHelper.RewardGGListener {
 
     var running = false
     private var starting = false
@@ -83,10 +85,6 @@ class MainActivity : AppCompatActivity(), VpnListAdapter.VpnItemListener {
                 sendBroadcast(Intent("stop_vpn"))
             }
         }
-
-        watch_video.setOnClickListener {
-            GGHelper.showRewardVideoGG()
-        }
     }
 
     private fun loadGGAndShow(){
@@ -94,6 +92,7 @@ class MainActivity : AppCompatActivity(), VpnListAdapter.VpnItemListener {
                 .inflate(R.layout.template_main_page_ad, null) as UnifiedNativeAdView
         GGHelper.loadAndShowMainPageAd(this,adView,fl_ad)
 
+        GGHelper.rewardGGListener = this
         GGHelper.loadRewardVideoGG(this)
     }
 
@@ -219,7 +218,7 @@ class MainActivity : AppCompatActivity(), VpnListAdapter.VpnItemListener {
                     fab.setImageResource(android.R.drawable.ic_media_pause)
                     fab.post {
                         startNotification()
-                        showRateDialog()
+                        showRateOrAdDialog()
                     }
                 }
                 "vpn_start_err" -> {
@@ -261,9 +260,9 @@ class MainActivity : AppCompatActivity(), VpnListAdapter.VpnItemListener {
         }
     }
 
-    private fun showRateDialog(){
+    private fun showRateOrAdDialog() {
         val connectTimes = Preferences.getInt(Preferences.KEY_CONNECT_TIME, 1)
-        if (connectTimes == 2 || connectTimes == 4) {
+        if (connectTimes == 2) {
 
             if (ratingDialog == null) {
                 ratingDialog = RateDialog(this, RateDialog.OnStarListener { starLevel ->
@@ -289,6 +288,8 @@ class MainActivity : AppCompatActivity(), VpnListAdapter.VpnItemListener {
             }
 
             ratingDialog?.show()
+        } else {
+            GGHelper.showRewardVideoGG()
         }
 
         Preferences.putInt(Preferences.KEY_CONNECT_TIME,connectTimes + 1)
@@ -306,5 +307,13 @@ class MainActivity : AppCompatActivity(), VpnListAdapter.VpnItemListener {
         channel.enableVibration(false)
         channel.setShowBadge(true) //是否在久按桌面图标时显示此渠道的通知
         return channel
+    }
+
+    override fun onRewarded(reward: RewardItem?) {
+
+    }
+
+    override fun onGGClosed() {
+        GGHelper.loadRewardVideoGG(this)
     }
 }

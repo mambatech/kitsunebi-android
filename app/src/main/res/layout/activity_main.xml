@@ -57,33 +57,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_marginLeft="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/watch_video"
-                android:textColor="@color/color_222222"
-                android:textSize="12sp" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/watch_video"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin"
-                android:backgroundTint="@color/color_yellow"
-                app:borderWidth="0dp"
-                app:srcCompat="@drawable/ic_video" />
-
-
-        </LinearLayout>
-
     </LinearLayout>
 
     <FrameLayout

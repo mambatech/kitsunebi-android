@@ -41,13 +41,20 @@ object GGHelper {
     private var currentNativeAd: UnifiedNativeAd? = null
     private var rewardedVideoAd: RewardedVideoAd? = null
 
+    var rewardGGListener: RewardGGListener? = null
+
+    interface RewardGGListener{
+        fun onRewarded(reward: RewardItem?)
+        fun onGGClosed()
+    }
+
     fun loadRewardVideoGG(context: Context) {
         if (rewardedVideoAd == null) {
             rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(context)
 
             rewardedVideoAd!!.rewardedVideoAdListener = object : RewardedVideoAdListener{
                 override fun onRewardedVideoAdClosed() {
-                    loadRewardVideoGG(context)
+                    rewardGGListener?.onGGClosed()
                 }
 
                 override fun onRewardedVideoAdLeftApplication() {}
@@ -58,11 +65,14 @@ object GGHelper {
 
                 override fun onRewardedVideoCompleted() {}
 
-                override fun onRewarded(p0: RewardItem?) {}
+                override fun onRewarded(p0: RewardItem?) {
+                    rewardGGListener?.onRewarded(p0)
+                }
 
                 override fun onRewardedVideoStarted() {}
 
-                override fun onRewardedVideoAdFailedToLoad(p0: Int) {}
+                override fun onRewardedVideoAdFailedToLoad(p0: Int) {
+                }
             }
         }
 
