@@ -314,6 +314,8 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onGGClosed() {
-        GGHelper.loadRewardVideoGG(this)
+        fab?.postDelayed({
+            GGHelper.loadRewardVideoGG(this)
+        },1000)
     }
 }
