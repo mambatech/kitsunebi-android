@@ -31,7 +31,7 @@ open class SimpleVpnService : VpnService() {
     private var pfd: ParcelFileDescriptor? = null
     private var inputStream: FileInputStream? = null
     private var outputStream: FileOutputStream? = null
-    private var buffer = ByteBuffer.allocate(1501)
+    private var buffer = ByteBuffer.allocate(4096)
     @Volatile
     private var running = false
     private lateinit var bgThread: Thread
