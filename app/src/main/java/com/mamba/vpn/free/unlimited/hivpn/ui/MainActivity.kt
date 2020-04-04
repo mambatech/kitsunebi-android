@@ -22,21 +22,21 @@ import com.mamba.vpn.free.unlimited.hivpn.R
 import com.mamba.vpn.free.unlimited.hivpn.bean.ConnectStatus
 import com.mamba.vpn.free.unlimited.hivpn.bean.VpnItemBean
 import com.mamba.vpn.free.unlimited.hivpn.common.Constants
-import com.mamba.vpn.free.unlimited.hivpn.common.GGHelper
+//import com.mamba.vpn.free.unlimited.hivpn.common.GGHelper
 import com.mamba.vpn.free.unlimited.hivpn.common.showAlert
 import com.mamba.vpn.free.unlimited.hivpn.helper.VpnConnectMgr
 import com.mamba.vpn.free.unlimited.hivpn.service.SimpleVpnService
 import com.mamba.vpn.free.unlimited.hivpn.storage.Preferences
 import com.mamba.vpn.free.unlimited.hivpn.ui.adapter.VpnListAdapter
 import com.mamba.vpn.free.unlimited.hivpn.ui.dialog.RateDialog
-import com.google.android.gms.ads.formats.UnifiedNativeAdView
-import com.google.android.gms.ads.reward.RewardItem
+//import com.google.android.gms.ads.formats.UnifiedNativeAdView
+//import com.google.android.gms.ads.reward.RewardItem
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity(),
-        VpnListAdapter.VpnItemListener,GGHelper.RewardGGListener {
+        VpnListAdapter.VpnItemListener/*,GGHelper.RewardGGListener*/ {
 
     var running = false
     private var starting = false
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        GGHelper.loadExitGG(this)
+//        GGHelper.loadExitGG(this)
         ImmersionBar.with(this)
                 .fitsSystemWindows(true)
                 .statusBarColor(R.color.theme_blue)
@@ -88,12 +88,12 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun loadGGAndShow(){
-        val adView = layoutInflater
-                .inflate(R.layout.template_main_page_ad, null) as UnifiedNativeAdView
-        GGHelper.loadAndShowMainPageAd(this,adView,fl_ad)
+//        val adView = layoutInflater
+//                .inflate(R.layout.template_main_page_ad, null) as UnifiedNativeAdView
+//        GGHelper.loadAndShowMainPageAd(this,adView,fl_ad)
 
-        GGHelper.rewardGGListener = this
-        GGHelper.loadRewardVideoGG(this)
+//        GGHelper.rewardGGListener = this
+//        GGHelper.loadRewardVideoGG(this)
     }
 
     override fun onItemClicked(position: Int) {
@@ -170,7 +170,7 @@ class MainActivity : AppCompatActivity(),
 
     override fun onBackPressed() {
         super.onBackPressed()
-        GGHelper.showExitGG()
+//        GGHelper.showExitGG()
     }
 
     private fun startNotification() {
@@ -289,7 +289,7 @@ class MainActivity : AppCompatActivity(),
 
             ratingDialog?.show()
         } else {
-            GGHelper.showRewardVideoGG()
+//            GGHelper.showRewardVideoGG()
         }
 
         Preferences.putInt(Preferences.KEY_CONNECT_TIME,connectTimes + 1)
@@ -309,13 +309,13 @@ class MainActivity : AppCompatActivity(),
         return channel
     }
 
-    override fun onRewarded(reward: RewardItem?) {
-
-    }
-
-    override fun onGGClosed() {
-        fab?.postDelayed({
-            GGHelper.loadRewardVideoGG(this)
-        },1000)
-    }
+//    override fun onRewarded(reward: RewardItem?) {
+//
+//    }
+//
+//    override fun onGGClosed() {
+//        fab?.postDelayed({
+//            GGHelper.loadRewardVideoGG(this)
+//        },1000)
+//    }
 }
