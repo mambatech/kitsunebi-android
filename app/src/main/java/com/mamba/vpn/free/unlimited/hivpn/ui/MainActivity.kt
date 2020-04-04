@@ -267,7 +267,7 @@ class MainActivity : AppCompatActivity(),
             if (ratingDialog == null) {
                 ratingDialog = RateDialog(this, RateDialog.OnStarListener { starLevel ->
                     try {
-                        if (starLevel <= 3) {
+                        if (starLevel < 4) {
                             val intent = Intent(Intent.ACTION_SEND)
                             intent.type = "message/rfc822" // 设置邮件格式
                             val mail = arrayOf("mambatech2020@gmail.com")
