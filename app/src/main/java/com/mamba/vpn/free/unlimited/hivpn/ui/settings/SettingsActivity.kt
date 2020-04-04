@@ -1,6 +1,6 @@
-package com.exnor.vray.ui.settings
+package com.mamba.vpn.free.unlimited.hivpn.ui.settings
 
-import com.exnor.vray.R
+import com.mamba.vpn.free.unlimited.hivpn.R
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 

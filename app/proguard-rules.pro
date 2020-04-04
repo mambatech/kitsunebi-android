@@ -224,7 +224,7 @@ public static java.lang.String TABLENAME;
     public static ** valueOf(java.lang.String);
 }
 
--keep public class com.exnor.vray.R$*{
+-keep public class com.mamba.vpn.free.unlimited.hivpn.R$*{
 public static final int *;
 }
 

@@ -11,7 +11,7 @@ def name = "ExNorVpn"
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId 'com.exnor.vray'
+        applicationId 'com.mamba.vpn.free.unlimited.hivpn'
         minSdkVersion 17
         targetSdkVersion 28
         versionCode 22

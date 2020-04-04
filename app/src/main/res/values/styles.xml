@@ -33,7 +33,7 @@
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textSize">12sp</item>
         <item name="android:text">AD</item>
-        <item name="android:background">@color/theme_green</item>
+        <item name="android:background">@color/theme_blue</item>
         <item name="android:width">20dp</item>
         <item name="android:height">20dp</item>
     </style>
