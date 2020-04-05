@@ -4,8 +4,6 @@
     <string name="state_stopped">停止</string>
     <string name="state_connecting">连接中……</string>
     <string name="state_connected">已连接</string>
-    <string name="str_japan">日本</string>
-    <string name="str_singapore">新加坡</string>
     <string name="str_just_connecting">正在连接……</string>
     <string name="str_stopped_first">请先断开连接</string>
     <string name="watch_video">看广告视频</string>
@@ -13,5 +11,13 @@
     <string name="would_you_give_us_5_stars">喜欢 hivpn吗?</string>
     <string name="select_mailbox">请选择邮箱</string>
     <string name="mail_title">反馈</string>
+
+    <string name="str_japan_1">日本线路1</string>
+    <string name="str_japan_2">日本线路2</string>
+    <string name="str_japan_3">日本线路3</string>
+    <string name="str_japan_4">日本线路4</string>
+    <string name="str_singapore_1">新加坡线路1</string>
+    <string name="str_singapore_2">新加坡线路2</string>
+    <string name="str_singapore_3">新加坡线路3</string>
 
 </resources>

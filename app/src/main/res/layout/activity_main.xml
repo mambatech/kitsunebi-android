@@ -22,42 +22,18 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="70dp" />
+        android:layout_height="300dp"
+        android:layout_marginTop="70dp"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/str_connect"
-                android:textColor="@color/color_222222"
-                android:textSize="12sp" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin"
-                android:backgroundTint="@color/theme_blue"
-                app:borderWidth="0dp"
-                app:srcCompat="@android:drawable/ic_media_play" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_gravity="end|bottom"
+        android:backgroundTint="@color/theme_blue"
+        app:borderWidth="0dp"
+        app:srcCompat="@android:drawable/ic_media_play" />
 
     <FrameLayout
         android:id="@+id/fl_ad"

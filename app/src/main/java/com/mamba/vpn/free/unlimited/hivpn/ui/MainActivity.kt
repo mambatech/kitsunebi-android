@@ -1,22 +1,15 @@
 package com.mamba.vpn.free.unlimited.hivpn.ui
 
-import android.annotation.TargetApi
 import android.app.Activity
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.net.VpnService
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mamba.vpn.free.unlimited.hivpn.R
 import com.mamba.vpn.free.unlimited.hivpn.bean.ConnectStatus
@@ -133,12 +126,28 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun initData(): List<VpnItemBean> {
-        val japanBean = VpnItemBean(ConnectStatus.STOPPED, R.drawable.ic_japan,
-                getString(R.string.str_japan), false, Constants.JAPAN_CONFIG)
-        val singaporeBean = VpnItemBean(ConnectStatus.STOPPED, R.drawable.ic_singapore,
-                getString(R.string.str_singapore), false, Constants.SINGAPORE_CONFIG)
+        val japanBean1 = VpnItemBean(ConnectStatus.STOPPED, R.drawable.ic_japan,
+                getString(R.string.str_japan_1), false, Constants.JAPAN_CONFIG_1)
+        val singaporeBean1 = VpnItemBean(ConnectStatus.STOPPED, R.drawable.ic_singapore,
+                getString(R.string.str_singapore_1), false, Constants.SINGAPORE_CONFIG_1)
 
-        val list = arrayListOf(japanBean, singaporeBean)
+        val japanBean2 = VpnItemBean(ConnectStatus.STOPPED, R.drawable.ic_japan,
+                getString(R.string.str_japan_2), false, Constants.JAPAN_CONFIG_2)
+        val singaporeBean2 = VpnItemBean(ConnectStatus.STOPPED, R.drawable.ic_singapore,
+                getString(R.string.str_singapore_2), false, Constants.SINGAPORE_CONFIG_2)
+
+        val japanBean3 = VpnItemBean(ConnectStatus.STOPPED, R.drawable.ic_japan,
+                getString(R.string.str_japan_3), false, Constants.JAPAN_CONFIG_3)
+        val singaporeBean3 = VpnItemBean(ConnectStatus.STOPPED, R.drawable.ic_singapore,
+                getString(R.string.str_singapore_3), false, Constants.SINGAPORE_CONFIG_3)
+
+        val japanBean4 = VpnItemBean(ConnectStatus.STOPPED, R.drawable.ic_japan,
+                getString(R.string.str_japan_4), false, Constants.JAPAN_CONFIG_4)
+
+        val list = arrayListOf(japanBean1, singaporeBean1,
+                japanBean2,singaporeBean2,
+                japanBean3,singaporeBean3,japanBean4)
+
         var hit = false
         for (i in 0 until list.size) {
             val bean = list[i]
