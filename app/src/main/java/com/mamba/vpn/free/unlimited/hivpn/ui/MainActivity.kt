@@ -32,6 +32,7 @@ import com.mamba.vpn.free.unlimited.hivpn.ui.dialog.RateDialog
 //import com.google.android.gms.ads.formats.UnifiedNativeAdView
 //import com.google.android.gms.ads.reward.RewardItem
 import com.gyf.immersionbar.ImmersionBar
+import com.mamba.vpn.free.unlimited.hivpn.helper.NotifyServiceDelegate
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -43,13 +44,10 @@ class MainActivity : AppCompatActivity(),
     private var stopping = false
     private lateinit var configString: String
 
-    val mNotificationId = 100
-    private val NOTIFICATION_CHANNEL_ID = "scene_channel"
-    private val NOTIFICATION_CHANNEL_NAME = "scene_notification"
-    var mNotificationManager: NotificationManager? = null
     private var vpnAdapter: VpnListAdapter? = null
     private var curSelectedPosition = 0
     private var ratingDialog: RateDialog? = null
+    private var notifyDelegate: NotifyServiceDelegate? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,11 +57,12 @@ class MainActivity : AppCompatActivity(),
                 .fitsSystemWindows(true)
                 .statusBarColor(R.color.theme_blue)
                 .init()
+        notifyDelegate = NotifyServiceDelegate()
+        notifyDelegate?.bindService(this)
 
         setSupportActionBar(toolbar)
         loadGGAndShow()
 
-        mNotificationManager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         registerReceiver()
         sendBroadcast(Intent("ping"))
         updateUI()
@@ -133,13 +132,28 @@ class MainActivity : AppCompatActivity(),
         vpnAdapter?.updateDatas(initData())
     }
 
-    private fun initData(): List<VpnItemBean>{
-        val japanBean = VpnItemBean(ConnectStatus.STOPPED,R.drawable.ic_japan,
-                getString(R.string.str_japan),true,Constants.JAPAN_CONFIG)
-        val singaporeBean = VpnItemBean(ConnectStatus.STOPPED,R.drawable.ic_singapore,
-                getString(R.string.str_singapore),false,Constants.SINGAPORE_CONFIG)
+    private fun initData(): List<VpnItemBean> {
+        val japanBean = VpnItemBean(ConnectStatus.STOPPED, R.drawable.ic_japan,
+                getString(R.string.str_japan), false, Constants.JAPAN_CONFIG)
+        val singaporeBean = VpnItemBean(ConnectStatus.STOPPED, R.drawable.ic_singapore,
+                getString(R.string.str_singapore), false, Constants.SINGAPORE_CONFIG)
 
-        return arrayListOf(japanBean,singaporeBean)
+        val list = arrayListOf(japanBean, singaporeBean)
+        var hit = false
+        for (i in 0 until list.size) {
+            val bean = list[i]
+            if (VpnConnectMgr.curStatus == ConnectStatus.CONNECTED &&
+                    VpnConnectMgr.curConnectedIndex == i) {
+                bean.status = ConnectStatus.CONNECTED
+                bean.isSelected = true
+                hit = true
+                break
+            }else if (i == list.size - 1 && !hit){
+                list[0].isSelected = true
+            }
+        }
+
+        return list
     }
 
     private fun registerReceiver(){
@@ -173,31 +187,7 @@ class MainActivity : AppCompatActivity(),
 //        GGHelper.showExitGG()
     }
 
-    private fun startNotification() {
-        // Build Notification , setOngoing keeps the notification always in status bar
-        val mBuilder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-                .setContentTitle("ExNor")
-                .setContentText("Enjoy it")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setWhen(System.currentTimeMillis())
-                .setOngoing(true)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mNotificationManager?.createNotificationChannel(createChannel(this))
-        }
-
-        // Create pending intent, mention the Activity which needs to be
-        //triggered when user clicks on notification(StopScript.class in this case)
-        val contentIntent = PendingIntent.getActivity(this, 0,
-                Intent(this, MainActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT)
-
-        mBuilder.setContentIntent(contentIntent)
-
-        // Builds the notification and issues it.
-        Log.e("sentNotification","sent it...")
-        mNotificationManager?.notify(mNotificationId, mBuilder.build())
-    }
 
     val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -208,7 +198,7 @@ class MainActivity : AppCompatActivity(),
                     running = false
                     stopping = false
                     fab.setImageResource(android.R.drawable.ic_media_play)
-                    mNotificationManager?.cancel(mNotificationId)
+                    notifyDelegate?.updateNotify(false)
                 }
                 "vpn_started" -> {
                     VpnConnectMgr.curStatus = ConnectStatus.CONNECTED
@@ -217,7 +207,7 @@ class MainActivity : AppCompatActivity(),
                     starting = false
                     fab.setImageResource(android.R.drawable.ic_media_pause)
                     fab.post {
-                        startNotification()
+                        notifyDelegate?.updateNotify(true)
                         showRateOrAdDialog()
                     }
                 }
@@ -293,20 +283,6 @@ class MainActivity : AppCompatActivity(),
         }
 
         Preferences.putInt(Preferences.KEY_CONNECT_TIME,connectTimes + 1)
-    }
-
-    @TargetApi(26)
-    fun createChannel(context: Context): NotificationChannel { //创建 通知通道
-        val channel = NotificationChannel(
-                NOTIFICATION_CHANNEL_ID,
-                NOTIFICATION_CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_HIGH)
-
-        channel.enableLights(true) //是否在桌面icon右上角展示小红点
-        channel.lightColor = ContextCompat.getColor(context, R.color.colorAccent) //小红点颜色
-        channel.enableVibration(false)
-        channel.setShowBadge(true) //是否在久按桌面图标时显示此渠道的通知
-        return channel
     }
 
 //    override fun onRewarded(reward: RewardItem?) {

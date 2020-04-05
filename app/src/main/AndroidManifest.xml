@@ -71,6 +71,7 @@
             android:label="Subscribe Config"
             android:parentActivityName=".ui.MainActivity">
         </activity>
+        <service android:name=".service.ForegroundNotiService"/>
 
         <service
             android:name=".service.SimpleVpnService"
