@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.net.VpnService
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -155,6 +156,7 @@ class MainActivity : AppCompatActivity(),
                     VpnConnectMgr.curConnectedIndex == i) {
                 bean.status = ConnectStatus.CONNECTED
                 bean.isSelected = true
+                curSelectedPosition = i
                 hit = true
                 break
             }else if (i == list.size - 1 && !hit){
