@@ -40,7 +40,7 @@ class ForegroundNotiService : Service() {
         }
 
         val mBuilder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-                .setContentTitle("ExNor")
+                .setContentTitle("HiVpn")
                 .setContentText(titleTxt)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setSmallIcon(R.mipmap.ic_launcher)
