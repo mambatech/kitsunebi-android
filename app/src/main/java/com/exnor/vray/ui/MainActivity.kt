@@ -54,7 +54,6 @@ class MainActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        GGHelper.loadExitGG(this)
         ImmersionBar.with(this)
                 .fitsSystemWindows(true)
                 .statusBarColor(R.color.theme_green)
@@ -88,10 +87,6 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun loadGGAndShow(){
-        val adView = layoutInflater
-                .inflate(R.layout.template_main_page_ad, null) as UnifiedNativeAdView
-        GGHelper.loadAndShowMainPageAd(this,adView,fl_ad)
-
         GGHelper.rewardGGListener = this
         GGHelper.loadRewardVideoGG(this)
     }
@@ -170,7 +165,6 @@ class MainActivity : AppCompatActivity(),
 
     override fun onBackPressed() {
         super.onBackPressed()
-        GGHelper.showExitGG()
     }
 
     private fun startNotification() {
@@ -267,7 +261,7 @@ class MainActivity : AppCompatActivity(),
             if (ratingDialog == null) {
                 ratingDialog = RateDialog(this, RateDialog.OnStarListener { starLevel ->
                     try {
-                        if (starLevel <= 3) {
+                        if (starLevel < 4) {
                             val intent = Intent(Intent.ACTION_SEND)
                             intent.type = "message/rfc822" // 设置邮件格式
                             val mail = arrayOf("mambatech2020@gmail.com")
