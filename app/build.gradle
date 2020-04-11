@@ -15,8 +15,8 @@ android {
         minSdkVersion 17
         targetSdkVersion 28
         versionCode 22
-        versionCode 101
-        versionName "1.0.1"
+        versionCode 102
+        versionName "1.0.2"
         vectorDrawables.useSupportLibrary = true
         project.ext.set("archivesBaseName", name + "_" + version)
         multiDexEnabled true
@@ -96,7 +96,7 @@ dependencies {
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0-beta05'
 
     //admob
-//    implementation 'com.google.android.gms:play-services-ads:19.0.1'
+    implementation 'com.google.android.gms:play-services-ads:19.0.1'
 }
 
 repositories {
