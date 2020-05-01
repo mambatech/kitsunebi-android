@@ -1,4 +1,4 @@
-package com.exnor.vray.common
+package com.exnor.vray.gg
 
 import android.content.Context
 import android.util.Log
@@ -8,7 +8,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
-import com.exnor.vray.BuildConfig
 import com.exnor.vray.R
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.formats.MediaView
@@ -18,7 +17,6 @@ import com.google.android.gms.ads.formats.UnifiedNativeAdView
 import com.google.android.gms.ads.reward.RewardItem
 import com.google.android.gms.ads.reward.RewardedVideoAd
 import com.google.android.gms.ads.reward.RewardedVideoAdListener
-import java.util.*
 
 
 /**
@@ -127,7 +125,7 @@ object GGHelper {
     fun loadAndShowMainPageAd(context: Context,adView: UnifiedNativeAdView,adContainer: ViewGroup){
         mainPageAdLoader = AdLoader.Builder(context, GG_MAIN_PAGE_NATIVE)
                 .forUnifiedNativeAd { ad : UnifiedNativeAd ->
-                    populateUnifiedNativeAdView(ad,adView)
+                    populateUnifiedNativeAdView(ad, adView)
                     currentNativeAd = ad
                     adContainer.removeAllViews()
                     adContainer.addView(adView)

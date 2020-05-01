@@ -97,6 +97,8 @@ dependencies {
 
     //admob
     implementation 'com.google.android.gms:play-services-ads:19.0.1'
+
+    implementation(name: 'open_ad_sdk', ext: 'aar')
 }
 
 repositories {

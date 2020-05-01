@@ -22,21 +22,21 @@ import com.exnor.vray.R
 import com.exnor.vray.bean.ConnectStatus
 import com.exnor.vray.bean.VpnItemBean
 import com.exnor.vray.common.Constants
-import com.exnor.vray.common.GGHelper
+import com.exnor.vray.gg.GGHelper
 import com.exnor.vray.common.showAlert
+import com.exnor.vray.gg.GGDanceHelper
 import com.exnor.vray.helper.VpnConnectMgr
 import com.exnor.vray.service.SimpleVpnService
 import com.exnor.vray.storage.Preferences
 import com.exnor.vray.ui.adapter.VpnListAdapter
 import com.exnor.vray.ui.dialog.RateDialog
-import com.google.android.gms.ads.formats.UnifiedNativeAdView
 import com.google.android.gms.ads.reward.RewardItem
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity(),
-        VpnListAdapter.VpnItemListener,GGHelper.RewardGGListener {
+        VpnListAdapter.VpnItemListener, GGHelper.RewardGGListener {
 
     var running = false
     private var starting = false
@@ -60,6 +60,7 @@ class MainActivity : AppCompatActivity(),
                 .init()
 
         setSupportActionBar(toolbar)
+        GGDanceHelper.initDanceGG(this)
         loadGGAndShow()
 
         mNotificationManager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -87,8 +88,9 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun loadGGAndShow(){
-        GGHelper.rewardGGListener = this
-        GGHelper.loadRewardVideoGG(this)
+        GGDanceHelper.loadRewardAd(GGDanceHelper.CODE_REWARD_SCREEN_GG)
+//        GGHelper.rewardGGListener = this
+//        GGHelper.loadRewardVideoGG(this)
     }
 
     override fun onItemClicked(position: Int) {
@@ -283,7 +285,8 @@ class MainActivity : AppCompatActivity(),
 
             ratingDialog?.show()
         } else {
-            GGHelper.showRewardVideoGG()
+//            GGHelper.showRewardVideoGG()
+            GGDanceHelper.showRewardAd(this)
         }
 
         Preferences.putInt(Preferences.KEY_CONNECT_TIME,connectTimes + 1)
@@ -309,7 +312,7 @@ class MainActivity : AppCompatActivity(),
 
     override fun onGGClosed() {
         fab?.postDelayed({
-            GGHelper.loadRewardVideoGG(this)
+//            GGHelper.loadRewardVideoGG(this)
         },1000)
     }
 }
