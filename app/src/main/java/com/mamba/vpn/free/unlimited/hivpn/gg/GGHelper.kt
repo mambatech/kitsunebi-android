@@ -1,4 +1,4 @@
-package com.mamba.vpn.free.unlimited.hivpn.common
+package com.mamba.vpn.free.unlimited.hivpn.gg
 
 import android.content.Context
 import android.util.Log
@@ -41,7 +41,7 @@ object GGHelper {
 
     var rewardGGListener: RewardGGListener? = null
 
-    interface RewardGGListener{
+    interface RewardGGListener {
         fun onRewarded(reward: RewardItem?)
         fun onGGClosed()
     }
@@ -50,7 +50,7 @@ object GGHelper {
         if (rewardedVideoAd == null) {
             rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(context)
 
-            rewardedVideoAd!!.rewardedVideoAdListener = object : RewardedVideoAdListener{
+            rewardedVideoAd!!.rewardedVideoAdListener = object : RewardedVideoAdListener {
                 override fun onRewardedVideoAdClosed() {
                     rewardGGListener?.onGGClosed()
                 }
@@ -77,23 +77,23 @@ object GGHelper {
         rewardedVideoAd?.loadAd(GG_REWARD, AdRequest.Builder().build())
     }
 
-    fun showRewardVideoGG(){
-        if (rewardedVideoAd?.isLoaded == true){
+    fun showRewardVideoGG() {
+        if (rewardedVideoAd?.isLoaded == true) {
             rewardedVideoAd?.show()
         }
     }
 
-    fun loadExitGG(context: Context){
+    fun loadExitGG(context: Context) {
         exitInterstitialAd = InterstitialAd(context)
         exitInterstitialAd?.adUnitId = GG_EXIT_APP_KEY
 
-        exitInterstitialAd?.adListener = object : AdListener(){
+        exitInterstitialAd?.adListener = object : AdListener() {
             override fun onAdLoaded() {
-                Log.e(tag,"onExitAdLoaded")
+                Log.e(tag, "onExitAdLoaded")
             }
 
             override fun onAdFailedToLoad(errorCode: Int) {
-                Log.e(tag,"onExitAdLoadedFailed:$errorCode")
+                Log.e(tag, "onExitAdLoadedFailed:$errorCode")
             }
 
             override fun onAdOpened() {
@@ -116,23 +116,23 @@ object GGHelper {
         exitInterstitialAd?.loadAd(AdRequest.Builder().build())
     }
 
-    fun showExitGG(){
-        if (exitInterstitialAd?.isLoaded == true){
+    fun showExitGG() {
+        if (exitInterstitialAd?.isLoaded == true) {
             exitInterstitialAd?.show()
         }
     }
 
-    fun loadAndShowMainPageAd(context: Context,adView: UnifiedNativeAdView,adContainer: ViewGroup){
+    fun loadAndShowMainPageAd(context: Context, adView: UnifiedNativeAdView, adContainer: ViewGroup) {
         mainPageAdLoader = AdLoader.Builder(context, GG_MAIN_PAGE_NATIVE)
-                .forUnifiedNativeAd { ad : UnifiedNativeAd ->
-                    populateUnifiedNativeAdView(ad,adView)
+                .forUnifiedNativeAd { ad: UnifiedNativeAd ->
+                    populateUnifiedNativeAdView(ad, adView)
                     currentNativeAd = ad
                     adContainer.removeAllViews()
                     adContainer.addView(adView)
                 }
                 .withAdListener(object : AdListener() {
                     override fun onAdFailedToLoad(errorCode: Int) {
-                        Log.e(tag,"onNativeAdLoadedFailed:$errorCode")
+                        Log.e(tag, "onNativeAdLoadedFailed:$errorCode")
                     }
 
                     override fun onAdLoaded() {
@@ -233,7 +233,6 @@ object GGHelper {
         // native ad view with this native ad.
         adView.setNativeAd(nativeAd)
     }
-
 
 
 }

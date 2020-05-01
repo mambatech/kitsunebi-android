@@ -8,11 +8,8 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.net.VpnService
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.gms.ads.formats.UnifiedNativeAdView
 import com.google.android.gms.ads.reward.RewardItem
 import com.mamba.vpn.free.unlimited.hivpn.R
 import com.mamba.vpn.free.unlimited.hivpn.bean.ConnectStatus
@@ -25,7 +22,8 @@ import com.mamba.vpn.free.unlimited.hivpn.storage.Preferences
 import com.mamba.vpn.free.unlimited.hivpn.ui.adapter.VpnListAdapter
 import com.mamba.vpn.free.unlimited.hivpn.ui.dialog.RateDialog
 import com.gyf.immersionbar.ImmersionBar
-import com.mamba.vpn.free.unlimited.hivpn.common.GGHelper
+import com.mamba.vpn.free.unlimited.hivpn.gg.GGDanceHelper
+import com.mamba.vpn.free.unlimited.hivpn.gg.GGHelper
 import com.mamba.vpn.free.unlimited.hivpn.helper.NotifyServiceDelegate
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -55,6 +53,7 @@ class MainActivity : AppCompatActivity(),
         notifyDelegate?.bindService(this)
 
         setSupportActionBar(toolbar)
+        GGDanceHelper.initDanceGG(this)
         loadGGAndShow()
 
         registerReceiver()
@@ -81,12 +80,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun loadGGAndShow(){
-        val adView = layoutInflater
-                .inflate(R.layout.template_main_page_ad, null) as UnifiedNativeAdView
-        GGHelper.loadAndShowMainPageAd(this,adView,fl_ad)
-
-        GGHelper.rewardGGListener = this
-        GGHelper.loadRewardVideoGG(this)
+        GGDanceHelper.loadRewardAd(GGDanceHelper.CODE_REWARD_SCREEN_GG)
     }
 
     override fun onItemClicked(position: Int) {
@@ -290,7 +284,8 @@ class MainActivity : AppCompatActivity(),
 
             ratingDialog?.show()
         } else {
-            GGHelper.showRewardVideoGG()
+//            GGHelper.showRewardVideoGG()
+            GGDanceHelper.showRewardAd(this)
         }
 
         Preferences.putInt(Preferences.KEY_CONNECT_TIME,connectTimes + 1)
@@ -302,7 +297,7 @@ class MainActivity : AppCompatActivity(),
 
     override fun onGGClosed() {
         fab?.postDelayed({
-            GGHelper.loadRewardVideoGG(this)
+//            GGHelper.loadRewardVideoGG(this)
         },1000)
     }
 }
