@@ -229,6 +229,7 @@ class MainActivity : AppCompatActivity(),
                     stopping = false
                     fab.setImageResource(android.R.drawable.ic_media_play)
                     mNotificationManager?.cancel(mNotificationId)
+                    GGDanceHelper.loadRewardAd(GGDanceHelper.CODE_REWARD_SCREEN_GG)
                 }
                 "vpn_started" -> {
                     VpnConnectMgr.curStatus = ConnectStatus.CONNECTED
