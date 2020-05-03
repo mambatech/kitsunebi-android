@@ -33,6 +33,7 @@ import com.exnor.vray.ui.dialog.RateDialog
 import com.google.android.gms.ads.reward.RewardItem
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.random.Random
 
 
 class MainActivity : AppCompatActivity(),
@@ -130,12 +131,35 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun initData(): List<VpnItemBean>{
-        val japanBean = VpnItemBean(ConnectStatus.STOPPED,R.drawable.ic_japan,
-                getString(R.string.str_japan),true,Constants.JAPAN_CONFIG)
-        val singaporeBean = VpnItemBean(ConnectStatus.STOPPED,R.drawable.ic_singapore,
-                getString(R.string.str_singapore),false,Constants.SINGAPORE_CONFIG)
+        val japanBean1 = VpnItemBean(ConnectStatus.STOPPED,R.drawable.ic_japan,
+                getString(R.string.str_japan_1),false,Constants.JAPAN_CONFIG_1)
+        val singaporeBean1 = VpnItemBean(ConnectStatus.STOPPED,R.drawable.ic_singapore,
+                getString(R.string.str_singapore_1),false,Constants.SINGAPORE_CONFIG_1)
 
-        return arrayListOf(japanBean,singaporeBean)
+        val japanBean2 = VpnItemBean(ConnectStatus.STOPPED,R.drawable.ic_japan,
+                getString(R.string.str_japan_2),false,Constants.JAPAN_CONFIG_2)
+        val singaporeBean2 = VpnItemBean(ConnectStatus.STOPPED,R.drawable.ic_singapore,
+                getString(R.string.str_singapore_2),false,Constants.SINGAPORE_CONFIG_2)
+
+        val beanList = arrayListOf(japanBean1,singaporeBean1,japanBean2,singaporeBean2)
+        var randomIndex = 0
+        if (VpnConnectMgr.curStatus != ConnectStatus.CONNECTED) {
+            randomIndex = Random.nextInt(beanList.size)
+            curSelectedPosition = randomIndex
+            val selectBean = beanList[randomIndex]
+            selectBean.isSelected = true
+            VpnConnectMgr.curVpnConfig = selectBean.configJson
+
+        }else{
+            randomIndex = VpnConnectMgr.currentSelectedPosition
+        }
+
+        val selectBean = beanList[randomIndex]
+        selectBean.isSelected = true
+        selectBean.status = VpnConnectMgr.curStatus
+        VpnConnectMgr.curVpnConfig = selectBean.configJson
+
+        return beanList
     }
 
     private fun registerReceiver(){
@@ -309,9 +333,5 @@ class MainActivity : AppCompatActivity(),
 
     }
 
-    override fun onGGClosed() {
-        fab?.postDelayed({
-//            GGHelper.loadRewardVideoGG(this)
-        },1000)
-    }
+    override fun onGGClosed() {}
 }

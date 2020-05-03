@@ -20,8 +20,6 @@
     <string name="state_stopped">Stopped</string>
     <string name="state_connecting">Connecting……</string>
     <string name="state_connected">Connected</string>
-    <string name="str_japan">Japan</string>
-    <string name="str_singapore">Singapore</string>
     <string name="str_just_connecting">Vpn is Connecting……</string>
     <string name="str_stopped_first">Please stop connecting first</string>
     <string name="watch_video">Watch Ad Video</string>
@@ -29,4 +27,8 @@
     <string name="would_you_give_us_5_stars">Enjoy using ExNorVpn?</string>
     <string name="select_mailbox">Please select mailbox</string>
     <string name="mail_title">Feedback</string>
+    <string name="str_japan_1">Japan Line 1</string>
+    <string name="str_singapore_1">Singapore Line 1</string>
+    <string name="str_japan_2">Japan Line 2</string>
+    <string name="str_singapore_2">Singapore Line 2</string>
 </resources>

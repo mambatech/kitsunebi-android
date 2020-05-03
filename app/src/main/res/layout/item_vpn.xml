@@ -39,7 +39,7 @@
                     android:textSize="18sp"
                     android:layout_marginLeft="7dp"
                     android:textColor="@color/color_222222"
-                    android:text="@string/str_japan"/>
+                    android:text="@string/str_japan_1"/>
 
             </LinearLayout>
 
