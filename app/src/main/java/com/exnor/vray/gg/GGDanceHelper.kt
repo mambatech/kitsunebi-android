@@ -53,7 +53,6 @@ object GGDanceHelper {
         if (mttFullVideoAd != null) {
             mttFullVideoAd?.showFullScreenVideoAd(act, TTAdConstant.RitScenes.GAME_FINISH_REWARDS, null)
         }
-        mttFullVideoAd = null
     }
 
     fun loadRewardAd(codeId: String){
@@ -89,7 +88,6 @@ object GGDanceHelper {
         if (mttRewardVideoAd != null){
             mttRewardVideoAd?.showRewardVideoAd(act)
         }
-        mttRewardVideoAd = null
     }
 
 }

@@ -89,8 +89,7 @@ class MainActivity : AppCompatActivity(),
 
     private fun loadGGAndShow(){
         GGDanceHelper.loadRewardAd(GGDanceHelper.CODE_REWARD_SCREEN_GG)
-//        GGHelper.rewardGGListener = this
-//        GGHelper.loadRewardVideoGG(this)
+        GGDanceHelper.loadFullScreenAd(GGDanceHelper.CODE_FULL_SCREEN_GG)
     }
 
     override fun onItemClicked(position: Int) {
@@ -167,6 +166,7 @@ class MainActivity : AppCompatActivity(),
 
     override fun onBackPressed() {
         super.onBackPressed()
+        GGDanceHelper.showFullScreenAd(this)
     }
 
     private fun startNotification() {
@@ -285,7 +285,6 @@ class MainActivity : AppCompatActivity(),
 
             ratingDialog?.show()
         } else {
-//            GGHelper.showRewardVideoGG()
             GGDanceHelper.showRewardAd(this)
         }
 
