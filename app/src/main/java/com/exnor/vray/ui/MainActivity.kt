@@ -90,7 +90,8 @@ class MainActivity : AppCompatActivity(),
 
     private fun loadGGAndShow(){
         GGDanceHelper.loadRewardAd(GGDanceHelper.CODE_REWARD_SCREEN_GG)
-        GGDanceHelper.loadFullScreenAd(GGDanceHelper.CODE_FULL_SCREEN_GG)
+        GGDanceHelper.loadMainPageAdAndShow(fl_ad_container)
+        GGDanceHelper.loadFullScreenAdAndShow(GGDanceHelper.CODE_FULL_SCREEN_GG,this)
     }
 
     override fun onItemClicked(position: Int) {
@@ -190,7 +191,6 @@ class MainActivity : AppCompatActivity(),
 
     override fun onBackPressed() {
         super.onBackPressed()
-        GGDanceHelper.showFullScreenAd(this)
     }
 
     private fun startNotification() {

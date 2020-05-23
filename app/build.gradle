@@ -95,6 +95,9 @@ dependencies {
     //状态栏颜色适配
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0-beta05'
 
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
     //admob
     implementation 'com.google.android.gms:play-services-ads:19.0.1'
 
