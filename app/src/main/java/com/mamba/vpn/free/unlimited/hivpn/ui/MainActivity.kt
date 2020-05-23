@@ -23,6 +23,7 @@ import com.mamba.vpn.free.unlimited.hivpn.ui.adapter.VpnListAdapter
 import com.mamba.vpn.free.unlimited.hivpn.ui.dialog.RateDialog
 import com.gyf.immersionbar.ImmersionBar
 import com.mamba.vpn.free.unlimited.hivpn.gg.GGDanceHelper
+import com.mamba.vpn.free.unlimited.hivpn.gg.GGDanceHelper.CODE_FULL_SCREEN_GG
 import com.mamba.vpn.free.unlimited.hivpn.gg.GGHelper
 import com.mamba.vpn.free.unlimited.hivpn.helper.NotifyServiceDelegate
 import kotlinx.android.synthetic.main.activity_main.*
@@ -81,6 +82,7 @@ class MainActivity : AppCompatActivity(),
 
     private fun loadGGAndShow(){
         GGDanceHelper.loadRewardAd(GGDanceHelper.CODE_REWARD_SCREEN_GG)
+        GGDanceHelper.loadMainPageAdAndShow(fl_ad_container)
     }
 
     override fun onItemClicked(position: Int) {
@@ -171,6 +173,7 @@ class MainActivity : AppCompatActivity(),
     override fun onResume() {
         super.onResume()
         sendBroadcast(Intent("ping"))
+        GGDanceHelper.loadFullScreenAdAndShow(CODE_FULL_SCREEN_GG,this)
     }
 
     override fun onDestroy() {
@@ -180,9 +183,7 @@ class MainActivity : AppCompatActivity(),
 
     override fun onBackPressed() {
         super.onBackPressed()
-        GGHelper.showExitGG()
     }
-
 
 
     val broadcastReceiver = object : BroadcastReceiver() {
@@ -195,6 +196,7 @@ class MainActivity : AppCompatActivity(),
                     stopping = false
                     fab.setImageResource(android.R.drawable.ic_media_play)
                     notifyDelegate?.updateNotify(false)
+                    GGDanceHelper.loadRewardAd(GGDanceHelper.CODE_REWARD_SCREEN_GG)
                 }
                 "vpn_started" -> {
                     VpnConnectMgr.curStatus = ConnectStatus.CONNECTED
@@ -275,7 +277,6 @@ class MainActivity : AppCompatActivity(),
 
             ratingDialog?.show()
         } else {
-//            GGHelper.showRewardVideoGG()
             GGDanceHelper.showRewardAd(this)
         }
 

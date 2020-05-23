@@ -31,18 +31,6 @@ object VpnConnectMgr {
                     3
                 }
 
-                Constants.JAPAN_CONFIG_3 -> {
-                    4
-                }
-
-                Constants.SINGAPORE_CONFIG_3 -> {
-                    5
-                }
-
-                Constants.JAPAN_CONFIG_4 -> {
-                    6
-                }
-
                 else -> {
                     -1
                 }

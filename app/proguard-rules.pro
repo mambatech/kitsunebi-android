@@ -241,3 +241,19 @@ public static final int *;
 
 -dontwarn org.apache.commons.**
 -keep class org.apache.commons.** { *;}
+<<<<<<< HEAD
+=======
+
+#穿山甲
+-keep class com.bytedance.sdk.openadsdk.** { *; }
+-keep public interface com.bytedance.sdk.openadsdk.downloadnew.** {*;}
+-keep class com.pgl.sys.ces.* {*;}
+
+#glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+>>>>>>> 9241edd... 首页加native广告
