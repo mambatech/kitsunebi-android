@@ -131,17 +131,8 @@ class MainActivity : AppCompatActivity(),
         val singaporeBean2 = VpnItemBean(ConnectStatus.STOPPED, R.drawable.ic_singapore,
                 getString(R.string.str_singapore_2), false, Constants.SINGAPORE_CONFIG_2)
 
-        val japanBean3 = VpnItemBean(ConnectStatus.STOPPED, R.drawable.ic_japan,
-                getString(R.string.str_japan_3), false, Constants.JAPAN_CONFIG_3)
-        val singaporeBean3 = VpnItemBean(ConnectStatus.STOPPED, R.drawable.ic_singapore,
-                getString(R.string.str_singapore_3), false, Constants.SINGAPORE_CONFIG_3)
-
-        val japanBean4 = VpnItemBean(ConnectStatus.STOPPED, R.drawable.ic_japan,
-                getString(R.string.str_japan_4), false, Constants.JAPAN_CONFIG_4)
-
         val list = arrayListOf(japanBean1, singaporeBean1,
-                japanBean2,singaporeBean2,
-                japanBean3,singaporeBean3,japanBean4)
+                japanBean2,singaporeBean2)
 
         var hit = false
         for (i in 0 until list.size) {

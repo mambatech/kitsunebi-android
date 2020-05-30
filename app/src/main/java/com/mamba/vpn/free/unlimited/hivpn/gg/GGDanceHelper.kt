@@ -20,7 +20,6 @@ object GGDanceHelper {
 
     fun initDanceGG(context: Context) {
         val ttAdManager: TTAdManager = TTAdManagerHolder.get()
-        TTAdManagerHolder.get().requestPermissionIfNecessary(context)
         mTTAdNative = ttAdManager.createAdNative(MApplication.sIns)
     }
 
