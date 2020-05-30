@@ -14,8 +14,8 @@ android {
         applicationId 'com.mamba.vpn.free.unlimited.hivpn'
         minSdkVersion 17
         targetSdkVersion 28
-        versionCode 102
-        versionName "1.0.2"
+        versionCode 105
+        versionName "1.0.5"
         vectorDrawables.useSupportLibrary = true
         project.ext.set("archivesBaseName", name + "_" + version)
         multiDexEnabled true
