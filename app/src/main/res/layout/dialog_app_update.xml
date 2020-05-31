@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/white_radius8"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center_horizontal"
+        android:text="@string/str_attention"
+        android:textColor="#202020"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_sub_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:textColor="#202020"
+        android:textSize="16sp" />
+
+    <View
+        android:id="@+id/view_split_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="40dp"
+        android:background="#f2f2f2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_left"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/str_cancel"
+            android:textColor="#181818"
+            android:textSize="16sp" />
+
+        <View
+            android:id="@+id/view_split_line_two"
+            android:layout_width="1dp"
+            android:layout_height="48dp"
+            android:background="#f2f2f2" />
+
+        <TextView
+            android:id="@+id/tv_right"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="@string/str_go_update"
+            android:textColor="#00b78a"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</LinearLayout>

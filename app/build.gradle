@@ -101,6 +101,21 @@ dependencies {
     //admob
     implementation 'com.google.android.gms:play-services-ads:19.0.1'
 
+    //gson
+    implementation 'com.google.code.gson:gson:2.8.6'
+
+    //retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0'
+
+    //rxjava
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.4'
+
+    //rxandroid
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+
     implementation(name: 'open_ad_sdk', ext: 'aar')
 }
 

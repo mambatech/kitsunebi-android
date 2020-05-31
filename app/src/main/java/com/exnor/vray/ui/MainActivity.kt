@@ -25,6 +25,7 @@ import com.exnor.vray.common.Constants
 import com.exnor.vray.gg.GGHelper
 import com.exnor.vray.common.showAlert
 import com.exnor.vray.gg.GGDanceHelper
+import com.exnor.vray.helper.AppUpdateHelper
 import com.exnor.vray.helper.VpnConnectMgr
 import com.exnor.vray.service.SimpleVpnService
 import com.exnor.vray.storage.Preferences
@@ -86,6 +87,8 @@ class MainActivity : AppCompatActivity(),
                 sendBroadcast(Intent("stop_vpn"))
             }
         }
+
+        AppUpdateHelper().checkAndShowUpdateDialog(this)
     }
 
     private fun loadGGAndShow(){

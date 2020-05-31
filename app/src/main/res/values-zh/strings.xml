@@ -15,5 +15,12 @@
     <string name="str_singapore_2">新加坡线路2</string>
     <string name="str_japan_1">日本线路1</string>
     <string name="str_singapore_1">新加坡线路1</string>
+    <string name="str_confirm">确定</string>
+    <string name="str_cancel">取消</string>
+    <string name="str_attention">注意了</string>
+    <string name="str_copy_it">复制到粘贴板</string>
+    <string name="str_copy_to_browser">复制到浏览器👇👇👇</string>
+    <string name="str_copy_success">复制成功！</string>
+    <string name="str_go_update">马上更新</string>
 
 </resources>
