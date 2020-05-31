@@ -105,7 +105,7 @@ object GGDanceHelper {
             }
 
             override fun onError(p0: Int, p1: String?) {
-                Log.e("ggdanceHelper","errorCode:$p0 _ errorMsg:$p1")
+                Log.e(tag,"errorCode:$p0 _ errorMsg:$p1")
             }
 
         })
