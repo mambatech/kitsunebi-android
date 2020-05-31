@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity(),
     private var curSelectedPosition = 0
     private var ratingDialog: RateDialog? = null
     private var notifyDelegate: NotifyServiceDelegate? = null
+    private var hasShowResumeGG = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -173,11 +174,15 @@ class MainActivity : AppCompatActivity(),
     override fun onResume() {
         super.onResume()
         sendBroadcast(Intent("ping"))
-        GGDanceHelper.loadFullScreenAdAndShow(CODE_FULL_SCREEN_GG,this)
+        if (!hasShowResumeGG) {
+            hasShowResumeGG = true
+            GGDanceHelper.loadFullScreenAdAndShow(CODE_FULL_SCREEN_GG, this)
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        hasShowResumeGG = false
         unregisterReceiver(broadcastReceiver)
     }
 
