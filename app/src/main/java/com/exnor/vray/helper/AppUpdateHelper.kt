@@ -91,7 +91,7 @@ class AppUpdateHelper : AppUpdateDialog.CommonLRDialogListener {
     private fun goUpdate() {
         val intent = Intent()
         intent.action = Intent.ACTION_VIEW
-        intent.data = Uri.parse("https://www.baidu.com")
+        intent.data = Uri.parse(copyLink)
         mContext?.startActivity(intent)
     }
 
