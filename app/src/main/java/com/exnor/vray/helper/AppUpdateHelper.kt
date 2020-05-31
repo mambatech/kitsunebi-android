@@ -51,10 +51,11 @@ class AppUpdateHelper : AppUpdateDialog.CommonLRDialogListener {
             for (i in newVersions.indices) {
                 val newVersion = newVersions[i]
                 if (minGap == 0) {
+                    newOne = newVersion
                     minGap = newVersion.version
                 }
 
-                //找出最近的升级版本
+                //找出最小的升级版本
                 if (newVersion.version <= minGap) {
                     newOne = newVersion
                     minGap = newVersion.version
