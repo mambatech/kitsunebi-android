@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.bytedance.sdk.openadsdk.*
 import com.exnor.vray.MApplication
 import com.exnor.vray.R
+import com.exnor.vray.record.RecordGG
 
 /**
 created by edison 2020/5/1
@@ -46,18 +47,39 @@ object GGDanceHelper {
                 Log.e(tag,"onFullScreenVideoAdLoad")
                 mttFullVideoAd = p0
                 mttFullVideoAd?.showFullScreenVideoAd(act, TTAdConstant.RitScenes.GAME_FINISH_REWARDS, null)
+
+                RecordGG.recordGGLoadResult(
+                        codeId,
+                        RecordGG.VALUE_FULL_SCREEN,
+                        RecordGG.VALUE_SUCCESS
+                )
+                RecordGG.recordGGShow(
+                        codeId,
+                        RecordGG.VALUE_FULL_SCREEN
+                )
             }
 
             override fun onFullScreenVideoCached() {
                 Log.e(tag,"onFullScreenVideoCached")
             }
 
-            override fun onError(p0: Int, p1: String?) {
-                Log.e(tag,"onFullAdError: code="+p0 + "_" +"msg:"+p1)
+            override fun onError(errorCode: Int, msg: String?) {
+                Log.e(tag,"onFullAdError: code="+errorCode + "_" +"msg:"+msg)
 
+                RecordGG.recordGGLoadResult(
+                        codeId,
+                        RecordGG.VALUE_FULL_SCREEN,
+                        RecordGG.VALUE_FAIL,
+                        errorCode
+                )
             }
 
         })
+
+        RecordGG.recordGGLoad(
+                codeId,
+                RecordGG.VALUE_FULL_SCREEN
+        )
     }
 
     fun loadRewardAd(codeId: String){
@@ -76,17 +98,32 @@ object GGDanceHelper {
             override fun onRewardVideoAdLoad(p0: TTRewardVideoAd?) {
                 Log.e(tag,"onRewardVideoAdLoad")
                 mttRewardVideoAd = p0
+                RecordGG.recordGGLoadResult(
+                        codeId,
+                        RecordGG.VALUE_REWARD,
+                        RecordGG.VALUE_SUCCESS
+                )
             }
 
             override fun onRewardVideoCached() {
                 Log.e(tag,"onRewardVideoCached")
             }
 
-            override fun onError(p0: Int, p1: String?) {
-                Log.e(tag,"onRewardAdError: code="+p0 + "_" +"msg:"+p1)
+            override fun onError(errorCode: Int, msg: String?) {
+                Log.e(tag,"onRewardAdError: code="+errorCode + "_" +"msg:"+msg)
+                RecordGG.recordGGLoadResult(
+                        codeId,
+                        RecordGG.VALUE_REWARD,
+                        RecordGG.VALUE_FAIL,
+                        errorCode
+                )
             }
-
         })
+
+        RecordGG.recordGGLoad(
+                codeId,
+                RecordGG.VALUE_REWARD
+        )
     }
 
     fun loadMainPageAdAndShow(adContainer: ViewGroup){
@@ -102,13 +139,31 @@ object GGDanceHelper {
                 if (p0?.isNotEmpty() == true){
                     fillMainPageSmallPicAd(p0[0],adContainer)
                 }
+
+                RecordGG.recordGGLoadResult(
+                        CODE_MAIN_PAGE_GG,
+                        RecordGG.VALUE_NATIVE,
+                        RecordGG.VALUE_SUCCESS
+                )
             }
 
-            override fun onError(p0: Int, p1: String?) {
-                Log.e(tag,"errorCode:$p0 _ errorMsg:$p1")
+            override fun onError(errorCode: Int, msg: String?) {
+                Log.e(tag,"errorCode:$errorCode _ errorMsg:$msg")
+
+                RecordGG.recordGGLoadResult(
+                        CODE_MAIN_PAGE_GG,
+                        RecordGG.VALUE_NATIVE,
+                        RecordGG.VALUE_FAIL,
+                        errorCode
+                )
             }
 
         })
+
+        RecordGG.recordGGLoad(
+                CODE_MAIN_PAGE_GG,
+                RecordGG.VALUE_NATIVE
+        )
     }
 
     private fun fillMainPageSmallPicAd(nativeAd: TTFeedAd,adContainer: ViewGroup){
@@ -156,21 +211,47 @@ object GGDanceHelper {
             }
 
             override fun onAdShow(p0: TTNativeAd?) {
-
+                RecordGG.recordGGShowResult(
+                        CODE_MAIN_PAGE_GG,
+                        RecordGG.VALUE_NATIVE,
+                        RecordGG.VALUE_SUCCESS
+                )
             }
 
             override fun onAdCreativeClick(p0: View?, p1: TTNativeAd?) {
 
             }
         })
+
+        RecordGG.recordGGShow(
+                CODE_MAIN_PAGE_GG,
+                RecordGG.VALUE_NATIVE
+        )
     }
 
-    fun showRewardAd(act: Activity){
-        if (mttRewardVideoAd != null){
+    fun showRewardAd(act: Activity, codeId: String) {
+
+        if (mttRewardVideoAd != null) {
             mttRewardVideoAd?.showRewardVideoAd(act)
+            RecordGG.recordGGShowResult(
+                    codeId,
+                    RecordGG.VALUE_REWARD,
+                    RecordGG.VALUE_SUCCESS
+            )
+        } else {
+            RecordGG.recordGGShowResult(
+                    codeId,
+                    RecordGG.VALUE_REWARD,
+                    RecordGG.VALUE_FAIL
+            )
         }
 
         mttRewardVideoAd = null
+
+        RecordGG.recordGGShow(
+                codeId,
+                RecordGG.VALUE_REWARD
+        )
     }
 
 }

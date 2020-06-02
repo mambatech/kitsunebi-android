@@ -313,7 +313,7 @@ class MainActivity : AppCompatActivity(),
 
             ratingDialog?.show()
         } else {
-            GGDanceHelper.showRewardAd(this)
+            GGDanceHelper.showRewardAd(this, GGDanceHelper.CODE_REWARD_SCREEN_GG)
         }
 
         Preferences.putInt(Preferences.KEY_CONNECT_TIME,connectTimes + 1)
