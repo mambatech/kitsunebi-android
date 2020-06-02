@@ -186,7 +186,12 @@ class MainActivity : BaseActivity(),
     override fun onResume() {
         super.onResume()
         sendBroadcast(Intent("ping"))
+        MobclickAgent.onResume(this)
+    }
 
+    override fun onPause() {
+        super.onPause()
+        MobclickAgent.onPause(this)
     }
 
     override fun onDestroy() {

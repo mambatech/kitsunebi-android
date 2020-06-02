@@ -8,13 +8,5 @@ import com.umeng.analytics.MobclickAgent
  */
 
 abstract class BaseActivity : AppCompatActivity() {
-    override fun onResume() {
-        super.onResume()
-        MobclickAgent.onResume(this)
-    }
 
-    override fun onPause() {
-        super.onPause()
-        MobclickAgent.onPause(this)
-    }
 }
