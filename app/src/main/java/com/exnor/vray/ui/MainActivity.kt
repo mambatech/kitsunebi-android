@@ -33,11 +33,12 @@ import com.exnor.vray.ui.adapter.VpnListAdapter
 import com.exnor.vray.ui.dialog.RateDialog
 import com.google.android.gms.ads.reward.RewardItem
 import com.gyf.immersionbar.ImmersionBar
+import com.umeng.analytics.MobclickAgent
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.random.Random
 
 
-class MainActivity : AppCompatActivity(),
+class MainActivity : BaseActivity(),
         VpnListAdapter.VpnItemListener, GGHelper.RewardGGListener {
 
     var running = false
@@ -185,6 +186,7 @@ class MainActivity : AppCompatActivity(),
     override fun onResume() {
         super.onResume()
         sendBroadcast(Intent("ping"))
+
     }
 
     override fun onDestroy() {
