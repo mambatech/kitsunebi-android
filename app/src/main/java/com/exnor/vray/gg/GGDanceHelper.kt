@@ -14,6 +14,7 @@ import com.bytedance.sdk.openadsdk.*
 import com.exnor.vray.MApplication
 import com.exnor.vray.R
 import com.exnor.vray.record.RecordGG
+import com.exnor.vray.utils.ScreenUtils
 
 /**
 created by edison 2020/5/1
@@ -36,9 +37,11 @@ object GGDanceHelper {
     }
 
     fun loadFullScreenAdAndShow(codeId: String,act: Activity){
-        var adSlot = AdSlot.Builder()
+        val adSlot = AdSlot.Builder()
                 .setCodeId(codeId)
                 .setSupportDeepLink(true)
+                .setExpressViewAcceptedSize(
+                        getScreenWidthDp(), 0f) // 设置允许的广告尺寸
                 .setOrientation(TTAdConstant.VERTICAL)
                 .build()
 
@@ -89,6 +92,8 @@ object GGDanceHelper {
                 .setSupportDeepLink(true)
                 .setRewardName("金币") //奖励的名称
                 .setRewardAmount(1) //奖励的数量
+                .setExpressViewAcceptedSize(
+                        getScreenWidthDp(), 0f) // 设置允许的广告尺寸
                 .setUserID("user123") //用户id,必传参数
                 .setMediaExtra("media_extra") //附加参数，可选
                 .setOrientation(TTAdConstant.VERTICAL)
@@ -125,6 +130,9 @@ object GGDanceHelper {
                 RecordGG.VALUE_REWARD
         )
     }
+
+    private fun getScreenWidthDp() =
+            ScreenUtils.px2dip(MApplication.sIns, ScreenUtils.getScreenWidth(MApplication.sIns).toFloat()).toFloat()
 
     fun loadMainPageAdAndShow(adContainer: ViewGroup){
         val adSlot = AdSlot.Builder()
