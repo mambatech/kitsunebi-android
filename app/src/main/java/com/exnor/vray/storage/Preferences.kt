@@ -7,6 +7,13 @@ import com.exnor.vray.MApplication
 open class Preferences {
     companion object {
         const val KEY_CONNECT_TIME = "connect_time"
+        private const val KEY_ENTER_TIMES = "enter_times" // APP启动次数
+
+        var enterTimes: Int
+            set(value) {
+                putInt(KEY_ENTER_TIMES, value)
+            }
+        get() = getInt(KEY_ENTER_TIMES, 0)
 
         fun putString(k: String, v: String) {
             val sharedPref = MApplication.sIns.getSharedPreferences(
@@ -20,10 +27,10 @@ open class Preferences {
         fun getString(k: String, default: String?): String {
             val sharedPref = MApplication.sIns.getSharedPreferences(
                     MApplication.sIns.getString(R.string.config_preference), Context.MODE_PRIVATE)
-            if (default != null) {
-                return sharedPref.getString(k, default!!)
+            return if (default != null) {
+                sharedPref.getString(k, default) ?: default
             } else {
-                return sharedPref.getString(k, "")
+                sharedPref.getString(k, "") ?: ""
             }
         }
 
@@ -39,10 +46,10 @@ open class Preferences {
         fun getBool(k: String, default: Boolean?): Boolean {
             val sharedPref = MApplication.sIns.getSharedPreferences(
                     MApplication.sIns.getString(R.string.config_preference), Context.MODE_PRIVATE)
-            if (default != null) {
-                return sharedPref.getBoolean(k, default!!)
+            return if (default != null) {
+                sharedPref.getBoolean(k, default)
             } else {
-                return sharedPref.getBoolean(k, false)
+                sharedPref.getBoolean(k, false)
             }
         }
 
@@ -57,10 +64,10 @@ open class Preferences {
         fun getInt(k: String, default: Int?): Int {
             val sharedPref = MApplication.sIns.getSharedPreferences(
                     MApplication.sIns.getString(R.string.config_preference), Context.MODE_PRIVATE)
-            if (default != null) {
-                return sharedPref.getInt(k, default!!)
+            return if (default != null) {
+                sharedPref.getInt(k, default)
             } else {
-                return sharedPref.getInt(k, 0)
+                sharedPref.getInt(k, 0)
             }
         }
     }

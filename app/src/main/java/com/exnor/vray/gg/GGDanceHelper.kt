@@ -25,7 +25,7 @@ object GGDanceHelper {
     private var mTTAdNative: TTAdNative? = null
     private var mttFullVideoAd: TTFullScreenVideoAd? = null
     private var mttRewardVideoAd: TTRewardVideoAd? = null
-    val CODE_FULL_SCREEN_GG = "945153718"
+    val CODE_FULL_SCREEN_GG = "945229418"
     val CODE_REWARD_SCREEN_GG = "945161784"
     val CODE_MAIN_PAGE_GG = "945191135"
     private var context: Context? = null
@@ -40,8 +40,6 @@ object GGDanceHelper {
         val adSlot = AdSlot.Builder()
                 .setCodeId(codeId)
                 .setSupportDeepLink(true)
-                .setExpressViewAcceptedSize(
-                        getScreenWidthDp(), 0f) // 设置允许的广告尺寸
                 .setOrientation(TTAdConstant.VERTICAL)
                 .build()
 
@@ -49,16 +47,41 @@ object GGDanceHelper {
             override fun onFullScreenVideoAdLoad(p0: TTFullScreenVideoAd?) {
                 Log.e(tag,"onFullScreenVideoAdLoad")
                 mttFullVideoAd = p0
+                mttFullVideoAd?.setFullScreenVideoAdInteractionListener(object : TTFullScreenVideoAd.FullScreenVideoAdInteractionListener {
+                    override fun onSkippedVideo() {
+
+                    }
+
+                    override fun onAdShow() {
+                        RecordGG.recordGGShowResult(
+                                codeId,
+                                RecordGG.VALUE_FULL_SCREEN,
+                                RecordGG.VALUE_SUCCESS
+                        )
+                    }
+
+                    override fun onAdVideoBarClick() {
+                        RecordGG.recordGGClick(
+                                codeId,
+                                RecordGG.VALUE_FULL_SCREEN
+                        )
+                    }
+
+                    override fun onVideoComplete() {
+
+                    }
+
+                    override fun onAdClose() {
+
+                    }
+
+                })
                 mttFullVideoAd?.showFullScreenVideoAd(act, TTAdConstant.RitScenes.GAME_FINISH_REWARDS, null)
 
                 RecordGG.recordGGLoadResult(
                         codeId,
                         RecordGG.VALUE_FULL_SCREEN,
                         RecordGG.VALUE_SUCCESS
-                )
-                RecordGG.recordGGShow(
-                        codeId,
-                        RecordGG.VALUE_FULL_SCREEN
                 )
             }
 
@@ -80,6 +103,11 @@ object GGDanceHelper {
         })
 
         RecordGG.recordGGLoad(
+                codeId,
+                RecordGG.VALUE_FULL_SCREEN
+        )
+
+        RecordGG.recordGGShow(
                 codeId,
                 RecordGG.VALUE_FULL_SCREEN
         )
@@ -144,8 +172,14 @@ object GGDanceHelper {
 
         mTTAdNative?.loadFeedAd(adSlot,object : TTAdNative.FeedAdListener{
             override fun onFeedAdLoad(p0: MutableList<TTFeedAd>?) {
-                if (p0?.isNotEmpty() == true){
-                    fillMainPageSmallPicAd(p0[0],adContainer)
+                if (p0?.isNotEmpty() == true) {
+                    fillMainPageSmallPicAd(p0[0], adContainer)
+                } else {
+                    RecordGG.recordGGShowResult(
+                            CODE_MAIN_PAGE_GG,
+                            RecordGG.VALUE_NATIVE,
+                            RecordGG.VALUE_FAIL
+                    )
                 }
 
                 RecordGG.recordGGLoadResult(
@@ -169,6 +203,11 @@ object GGDanceHelper {
         })
 
         RecordGG.recordGGLoad(
+                CODE_MAIN_PAGE_GG,
+                RecordGG.VALUE_NATIVE
+        )
+
+        RecordGG.recordGGShow(
                 CODE_MAIN_PAGE_GG,
                 RecordGG.VALUE_NATIVE
         )
@@ -219,33 +258,69 @@ object GGDanceHelper {
             }
 
             override fun onAdShow(p0: TTNativeAd?) {
-                RecordGG.recordGGShowResult(
-                        CODE_MAIN_PAGE_GG,
-                        RecordGG.VALUE_NATIVE,
-                        RecordGG.VALUE_SUCCESS
-                )
+
             }
 
             override fun onAdCreativeClick(p0: View?, p1: TTNativeAd?) {
-
+                RecordGG.recordGGClick(
+                        CODE_MAIN_PAGE_GG,
+                        RecordGG.VALUE_NATIVE
+                )
             }
         })
 
-        RecordGG.recordGGShow(
+        RecordGG.recordGGShowResult(
                 CODE_MAIN_PAGE_GG,
-                RecordGG.VALUE_NATIVE
+                RecordGG.VALUE_NATIVE,
+                RecordGG.VALUE_SUCCESS
         )
     }
 
     fun showRewardAd(act: Activity, codeId: String) {
 
         if (mttRewardVideoAd != null) {
+            mttRewardVideoAd?.setRewardAdInteractionListener(object : TTRewardVideoAd.RewardAdInteractionListener {
+                override fun onRewardVerify(p0: Boolean, p1: Int, p2: String?) {
+
+                }
+
+                override fun onSkippedVideo() {
+
+                }
+
+                override fun onAdShow() {
+                    RecordGG.recordGGShowResult(
+                            codeId,
+                            RecordGG.VALUE_REWARD,
+                            RecordGG.VALUE_SUCCESS
+                    )
+                }
+
+                override fun onAdVideoBarClick() {
+                    RecordGG.recordGGClick(
+                            codeId,
+                            RecordGG.VALUE_REWARD
+                    )
+                }
+
+                override fun onVideoComplete() {
+
+                }
+
+                override fun onAdClose() {
+
+                }
+
+                override fun onVideoError() {
+                    RecordGG.recordGGShowResult(
+                            codeId,
+                            RecordGG.VALUE_REWARD,
+                            RecordGG.VALUE_FAIL,
+                            RecordGG.VALUE_VIDEO_ERROR
+                    )
+                }
+            })
             mttRewardVideoAd?.showRewardVideoAd(act)
-            RecordGG.recordGGShowResult(
-                    codeId,
-                    RecordGG.VALUE_REWARD,
-                    RecordGG.VALUE_SUCCESS
-            )
         } else {
             RecordGG.recordGGShowResult(
                     codeId,

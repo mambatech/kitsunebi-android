@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import com.exnor.vray.R
+import com.exnor.vray.record.RecordGG
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.formats.MediaView
 import com.google.android.gms.ads.formats.NativeAdOptions
@@ -25,8 +26,8 @@ created by edison 2020/3/22
 object GGHelper {
 
     val tag = GGHelper::class.java.simpleName
-    val GG_EXIT_APP_KEY = "ca-app-pub-8917831695584667/6069290889"
-//    val GG_EXIT_APP_KEY = "ca-app-pub-3940256099942544/1033173712" //测试
+    val GG_ENTER_APP_KEY = "ca-app-pub-8917831695584667/7063694773"
+//    val GG_ENTER_APP_KEY = "ca-app-pub-3940256099942544/1033173712" //测试
 
     val GG_MAIN_PAGE_NATIVE = "ca-app-pub-8917831695584667/1746902493"
 //    val GG_MAIN_PAGE_NATIVE = "ca-app-pub-3940256099942544/2247696110"   //测试
@@ -34,7 +35,7 @@ object GGHelper {
     val GG_REWARD = "ca-app-pub-8917831695584667/5012704988"
 //    val GG_REWARD = "ca-app-pub-3940256099942544/5224354917" //测试
 
-    private var exitInterstitialAd: InterstitialAd? = null
+    private var enterInterstitialAd: InterstitialAd? = null
     private var mainPageAdLoader: AdLoader? = null
     private var currentNativeAd: UnifiedNativeAd? = null
     private var rewardedVideoAd: RewardedVideoAd? = null
@@ -57,7 +58,13 @@ object GGHelper {
 
                 override fun onRewardedVideoAdLeftApplication() {}
 
-                override fun onRewardedVideoAdLoaded() {}
+                override fun onRewardedVideoAdLoaded() {
+                    RecordGG.recordGGLoadResult(
+                            GG_REWARD,
+                            RecordGG.VALUE_REWARD,
+                            RecordGG.VALUE_SUCCESS
+                    )
+                }
 
                 override fun onRewardedVideoAdOpened() {}
 
@@ -69,31 +76,69 @@ object GGHelper {
 
                 override fun onRewardedVideoStarted() {}
 
-                override fun onRewardedVideoAdFailedToLoad(p0: Int) {
+                override fun onRewardedVideoAdFailedToLoad(errorCode: Int) {
+                    RecordGG.recordGGLoadResult(
+                            GG_REWARD,
+                            RecordGG.VALUE_REWARD,
+                            RecordGG.VALUE_FAIL,
+                            errorCode
+                    )
                 }
             }
         }
 
         rewardedVideoAd?.loadAd(GG_REWARD, AdRequest.Builder().build())
+        RecordGG.recordGGLoad(
+                GG_REWARD,
+                RecordGG.VALUE_REWARD
+        )
     }
 
     fun showRewardVideoGG(){
-        if (rewardedVideoAd?.isLoaded == true){
+        if (rewardedVideoAd?.isLoaded == true) {
             rewardedVideoAd?.show()
+            RecordGG.recordGGShowResult(
+                    GG_REWARD,
+                    RecordGG.VALUE_REWARD,
+                    RecordGG.VALUE_SUCCESS
+            )
+        } else {
+            RecordGG.recordGGShowResult(
+                    GG_REWARD,
+                    RecordGG.VALUE_REWARD,
+                    RecordGG.VALUE_FAIL
+            )
         }
+
+        RecordGG.recordGGShow(
+                GG_REWARD,
+                RecordGG.VALUE_REWARD
+        )
     }
 
-    fun loadExitGG(context: Context){
-        exitInterstitialAd = InterstitialAd(context)
-        exitInterstitialAd?.adUnitId = GG_EXIT_APP_KEY
+    fun loadEnterGGAndShow(context: Context){
+        enterInterstitialAd = InterstitialAd(context)
+        enterInterstitialAd?.adUnitId = GG_ENTER_APP_KEY
 
-        exitInterstitialAd?.adListener = object : AdListener(){
+        enterInterstitialAd?.adListener = object : AdListener(){
             override fun onAdLoaded() {
                 Log.e(tag,"onExitAdLoaded")
+                showEnterGG()
+                RecordGG.recordGGLoadResult(
+                        GG_ENTER_APP_KEY,
+                        RecordGG.VALUE_FULL_SCREEN,
+                        RecordGG.VALUE_SUCCESS
+                )
             }
 
             override fun onAdFailedToLoad(errorCode: Int) {
                 Log.e(tag,"onExitAdLoadedFailed:$errorCode")
+                RecordGG.recordGGLoadResult(
+                        GG_ENTER_APP_KEY,
+                        RecordGG.VALUE_FULL_SCREEN,
+                        RecordGG.VALUE_FAIL,
+                        errorCode
+                )
             }
 
             override fun onAdOpened() {
@@ -101,7 +146,10 @@ object GGHelper {
             }
 
             override fun onAdClicked() {
-                // Code to be executed when the user clicks on an ad.
+                RecordGG.recordGGClick(
+                        GG_ENTER_APP_KEY,
+                        RecordGG.VALUE_FULL_SCREEN
+                )
             }
 
             override fun onAdLeftApplication() {
@@ -113,13 +161,33 @@ object GGHelper {
             }
 
         }
-        exitInterstitialAd?.loadAd(AdRequest.Builder().build())
+        enterInterstitialAd?.loadAd(AdRequest.Builder().build())
+        RecordGG.recordGGLoad(
+                GG_ENTER_APP_KEY,
+                RecordGG.VALUE_FULL_SCREEN
+        )
     }
 
-    fun showExitGG(){
-        if (exitInterstitialAd?.isLoaded == true){
-            exitInterstitialAd?.show()
+    private fun showEnterGG(){
+        if (enterInterstitialAd?.isLoaded == true) {
+            enterInterstitialAd?.show()
+            RecordGG.recordGGShowResult(
+                    GG_ENTER_APP_KEY,
+                    RecordGG.VALUE_FULL_SCREEN,
+                    RecordGG.VALUE_SUCCESS
+            )
+        } else {
+            RecordGG.recordGGShowResult(
+                    GG_ENTER_APP_KEY,
+                    RecordGG.VALUE_FULL_SCREEN,
+                    RecordGG.VALUE_FAIL
+            )
         }
+
+        RecordGG.recordGGShow(
+                GG_ENTER_APP_KEY,
+                RecordGG.VALUE_FULL_SCREEN
+        )
     }
 
     fun loadAndShowMainPageAd(context: Context,adView: UnifiedNativeAdView,adContainer: ViewGroup){
@@ -129,15 +197,31 @@ object GGHelper {
                     currentNativeAd = ad
                     adContainer.removeAllViews()
                     adContainer.addView(adView)
+
+                    RecordGG.recordGGShowResult(
+                            GG_MAIN_PAGE_NATIVE,
+                            RecordGG.VALUE_NATIVE,
+                            RecordGG.VALUE_SUCCESS
+                    )
                 }
                 .withAdListener(object : AdListener() {
                     override fun onAdFailedToLoad(errorCode: Int) {
                         Log.e(tag,"onNativeAdLoadedFailed:$errorCode")
+                        RecordGG.recordGGLoadResult(
+                                GG_MAIN_PAGE_NATIVE,
+                                RecordGG.VALUE_NATIVE,
+                                RecordGG.VALUE_FAIL,
+                                errorCode
+                        )
                     }
 
                     override fun onAdLoaded() {
                         super.onAdLoaded()
-
+                        RecordGG.recordGGLoadResult(
+                                GG_MAIN_PAGE_NATIVE,
+                                RecordGG.VALUE_NATIVE,
+                                RecordGG.VALUE_SUCCESS
+                        )
                     }
                 })
                 .withNativeAdOptions(NativeAdOptions.Builder()
@@ -146,6 +230,15 @@ object GGHelper {
                 .build()
 
         mainPageAdLoader?.loadAd(AdRequest.Builder().build())
+
+        RecordGG.recordGGLoad(
+                GG_MAIN_PAGE_NATIVE,
+                RecordGG.VALUE_NATIVE
+        )
+        RecordGG.recordGGShow(
+                GG_MAIN_PAGE_NATIVE,
+                RecordGG.VALUE_NATIVE
+        )
     }
 
     /**

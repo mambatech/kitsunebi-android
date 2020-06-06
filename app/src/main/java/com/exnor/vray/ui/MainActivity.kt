@@ -14,7 +14,6 @@ import android.net.VpnService
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +24,7 @@ import com.exnor.vray.common.Constants
 import com.exnor.vray.gg.GGHelper
 import com.exnor.vray.common.showAlert
 import com.exnor.vray.gg.GGDanceHelper
+import com.exnor.vray.gg.GGDelegate
 import com.exnor.vray.helper.AppUpdateHelper
 import com.exnor.vray.helper.VpnConnectMgr
 import com.exnor.vray.service.SimpleVpnService
@@ -90,12 +90,18 @@ class MainActivity : BaseActivity(),
         }
 
         AppUpdateHelper().checkAndShowUpdateDialog(this)
+
+        // APP启动次数+1
+        Preferences.enterTimes++
     }
 
-    private fun loadGGAndShow(){
-        GGDanceHelper.loadRewardAd(GGDanceHelper.CODE_REWARD_SCREEN_GG)
-        GGDanceHelper.loadMainPageAdAndShow(fl_ad_container)
-        GGDanceHelper.loadFullScreenAdAndShow(GGDanceHelper.CODE_FULL_SCREEN_GG,this)
+    private fun loadGGAndShow() {
+        GGDelegate.loadRewardGG()
+        GGDelegate.loadMainPageGGAndShow(fl_ad_container)
+        // 仅当双数轮进入APP的时候，展示进入广告
+        if (Preferences.enterTimes % 2 == 1) {
+            GGDelegate.loadEnterFullScreenGGAndShow(this)
+        }
     }
 
     override fun onItemClicked(position: Int) {
@@ -320,7 +326,7 @@ class MainActivity : BaseActivity(),
 
             ratingDialog?.show()
         } else {
-            GGDanceHelper.showRewardAd(this, GGDanceHelper.CODE_REWARD_SCREEN_GG)
+            GGDelegate.showRewardGG(this)
         }
 
         Preferences.putInt(Preferences.KEY_CONNECT_TIME,connectTimes + 1)
