@@ -14,17 +14,20 @@ import android.net.VpnService
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.exnor.vray.R
 import com.exnor.vray.bean.ConnectStatus
+import com.exnor.vray.bean.ServersConfigItem
 import com.exnor.vray.bean.VpnItemBean
 import com.exnor.vray.common.Constants
-import com.exnor.vray.gg.GGHelper
 import com.exnor.vray.common.showAlert
 import com.exnor.vray.gg.GGDanceHelper
 import com.exnor.vray.gg.GGDelegate
+import com.exnor.vray.gg.GGHelper
+import com.exnor.vray.helper.AEStool
 import com.exnor.vray.helper.AppUpdateHelper
 import com.exnor.vray.helper.VpnConnectMgr
 import com.exnor.vray.service.SimpleVpnService
@@ -93,6 +96,45 @@ class MainActivity : BaseActivity(),
 
         // APP启动次数+1
         Preferences.enterTimes++
+
+        Log.e("aesTest","ret:${AEStool.decrypt("6368616e676520746869732070617373",
+                "Vp7lkxPzAhX23YctvbyjzPNuFsli6p4cEoysF0Tzg5dxnfj521p7GsCXwbtNA2IoRlnErxmM6AGknNMyAjVsMw==")}")
+    }
+
+    private fun loadServerConfig(){
+
+
+    }
+
+    private fun parseServerConfig(configs: List<ServersConfigItem>){
+        val newConfigList = mutableListOf<VpnItemBean>()
+        for (item in configs){
+            var tmp0 = Constants.BASE_CONFIG.replace(Constants.KEY_IP,item.ip)
+            tmp0 = tmp0.replace(Constants.KEY_PORT,"\"port\":${item.port}")
+            tmp0 = tmp0.replace(Constants.KEY_UUID,item.uuid)
+            newConfigList.add(VpnItemBean(ConnectStatus.STOPPED,R.drawable.united_nations,
+                    getString(R.string.str_united_nation),false,tmp0))
+        }
+
+        var randomIndex = 0
+        if (VpnConnectMgr.curStatus != ConnectStatus.CONNECTED) {
+            randomIndex = Random.nextInt(newConfigList.size)
+            curSelectedPosition = randomIndex
+            val selectBean = newConfigList[randomIndex]
+            selectBean.isSelected = true
+            VpnConnectMgr.curVpnConfig = selectBean.configJson
+
+        }else{
+            randomIndex = VpnConnectMgr.currentSelectedPosition
+        }
+
+        val selectBean = newConfigList[randomIndex]
+        selectBean.isSelected = true
+        selectBean.status = VpnConnectMgr.curStatus
+        VpnConnectMgr.curVpnConfig = selectBean.configJson
+
+        vpnAdapter?.updateDatas(newConfigList)
+        Toast.makeText(this,getString(R.string.lines_updates),Toast.LENGTH_SHORT).show()
     }
 
     private fun loadGGAndShow() {
@@ -138,21 +180,17 @@ class MainActivity : BaseActivity(),
         rv_list.layoutManager = LinearLayoutManager(this)
         rv_list.adapter = vpnAdapter
         vpnAdapter?.itemClickListener = this
-        vpnAdapter?.updateDatas(initData())
+        vpnAdapter?.updateDatas(initLocalData())
     }
 
-    private fun initData(): List<VpnItemBean>{
-        val japanBean1 = VpnItemBean(ConnectStatus.STOPPED,R.drawable.ic_japan,
-                getString(R.string.str_japan_1),false,Constants.JAPAN_CONFIG_1)
+    private fun initLocalData(): List<VpnItemBean>{
         val singaporeBean1 = VpnItemBean(ConnectStatus.STOPPED,R.drawable.ic_singapore,
                 getString(R.string.str_singapore_1),false,Constants.SINGAPORE_CONFIG_1)
 
-        val japanBean2 = VpnItemBean(ConnectStatus.STOPPED,R.drawable.ic_japan,
-                getString(R.string.str_japan_2),false,Constants.JAPAN_CONFIG_2)
         val singaporeBean2 = VpnItemBean(ConnectStatus.STOPPED,R.drawable.ic_singapore,
                 getString(R.string.str_singapore_2),false,Constants.SINGAPORE_CONFIG_2)
 
-        val beanList = arrayListOf(japanBean1,singaporeBean1,japanBean2,singaporeBean2)
+        val beanList = arrayListOf(singaporeBean1,singaporeBean2)
         var randomIndex = 0
         if (VpnConnectMgr.curStatus != ConnectStatus.CONNECTED) {
             randomIndex = Random.nextInt(beanList.size)

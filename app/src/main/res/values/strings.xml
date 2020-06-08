@@ -38,6 +38,8 @@
     <string name="str_copy_success">Has Copied to clipboard</string>
     <string name="str_copy_to_browser">Copy to the browser👇👇👇</string>
     <string name="str_go_update">Update Now</string>
+    <string name="lines_updates">Lines update succeed!</string>
+    <string name="str_united_nation">United Nations~</string>
 
 
 </resources>
