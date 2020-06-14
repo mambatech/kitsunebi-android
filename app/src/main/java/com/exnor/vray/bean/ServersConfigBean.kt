@@ -15,7 +15,11 @@ data class ServersConfig (
 }
 
 data class ServersConfigItem (
-        val ip: String,
-        val port: Int,
-        val uuid: String
+        val IP: String,
+        val Port: Int,
+        val UUID: String,
+        val country_name: String,
+        val icon_url: String,
+        @ConnectStatus var status: Int,
+        var isSelected: Boolean
 )

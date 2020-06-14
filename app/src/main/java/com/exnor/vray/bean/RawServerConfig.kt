@@ -8,7 +8,7 @@ created by edison 2020/6/7
 data class RawServerConfig(
         @SerializedName("Code")
         var code: Int,
-        @SerializedName("ServersConfig")
+        @SerializedName("servers_config")
         var rawConfig: String
 ) {
 }

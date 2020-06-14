@@ -14,6 +14,9 @@ import javax.crypto.spec.SecretKeySpec;
  * created by edison 2020/6/7
  */
 public class AEStool {
+
+    private static final String KEY = "6368616e676520746869732070617373";
+
     public static byte[] encrypt(String key, byte[] origData) throws GeneralSecurityException {
 
         byte[] keyBytes = getKeyBytes(key);
@@ -45,9 +48,9 @@ public class AEStool {
         return Base64.encodeToString(crypted,Base64.DEFAULT);
     }
 
-    public static String decrypt(String key, String val) throws GeneralSecurityException {
+    public static String decrypt(String val) throws GeneralSecurityException {
         byte[] crypted = Base64.decode(val,Base64.URL_SAFE);
-        byte[] origData = decrypt(key, crypted);
+        byte[] origData = decrypt(KEY, crypted);
         return new String(origData);
     }
 

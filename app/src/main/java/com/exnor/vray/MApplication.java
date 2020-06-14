@@ -2,11 +2,7 @@ package com.exnor.vray;
 
 import android.app.Application;
 
-import com.bytedance.sdk.openadsdk.TTAdConfig;
-import com.bytedance.sdk.openadsdk.TTAdConstant;
-import com.bytedance.sdk.openadsdk.TTAdSdk;
 import com.exnor.vray.gg.TTAdManagerHolder;
-import com.google.android.gms.ads.MobileAds;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 

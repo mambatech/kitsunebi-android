@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ExNorVpn</string>
 
-    <string name="state_stopped">停止</string>
+    <string name="state_stopped">未连接</string>
     <string name="state_connecting">连接中……</string>
     <string name="state_connected">已连接</string>
     <string name="str_just_connecting">正在连接……</string>
@@ -24,6 +24,8 @@
     <string name="str_go_update">马上更新</string>
     <string name="lines_updates">线路更新成功！</string>
     <string name="str_united_nation">联合国~</string>
+    <string name="hand_to_right">👉</string>
+    <string name="hand_to_left">👈</string>
 
 
 </resources>

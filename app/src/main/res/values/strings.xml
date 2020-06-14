@@ -17,7 +17,7 @@
     <string name="inbound_tag">inbound_tag</string>
 
 
-    <string name="state_stopped">Stopped</string>
+    <string name="state_stopped">Not connected</string>
     <string name="state_connecting">Connecting……</string>
     <string name="state_connected">Connected</string>
     <string name="str_just_connecting">Vpn is Connecting……</string>
@@ -40,6 +40,8 @@
     <string name="str_go_update">Update Now</string>
     <string name="lines_updates">Lines update succeed!</string>
     <string name="str_united_nation">United Nations~</string>
+    <string name="hand_to_right">👉</string>
+    <string name="hand_to_left">👈</string>
 
 
 </resources>

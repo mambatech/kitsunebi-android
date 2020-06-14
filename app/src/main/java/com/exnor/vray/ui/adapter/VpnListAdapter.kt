@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.exnor.vray.R
 import com.exnor.vray.bean.ConnectStatus
 import com.exnor.vray.bean.VpnItemBean
@@ -46,23 +47,17 @@ class VpnListAdapter: RecyclerView.Adapter<VpnListAdapter.VpnVH>() {
         val context = holder.itemView.context
         val resource = context.resources
         val itemBean = dataList[position]
-        holder.ivCountry.setImageResource(itemBean.resCountry)
+        Glide.with(holder.ivCountry)
+                .load(itemBean.country_url)
+                .error(R.drawable.united_nations)
+                .into(holder.ivCountry)
         holder.tvCountry.text = itemBean.countryName
 
-        var strStatus = holder.tvState.context.getString(R.string.state_stopped)
-        when(itemBean.status){
-            ConnectStatus.CONNECTED -> strStatus = context.getString(R.string.state_connected)
-            ConnectStatus.CONNECTING ->strStatus = context.getString(R.string.state_connecting)
-        }
-
-        holder.tvState.text = strStatus
         if (itemBean.isSelected){
             holder.cvItem.setBackgroundColor(resource.getColor(R.color.theme_green))
-            holder.tvState.setTextColor(resource.getColor(R.color.color_white))
             holder.tvCountry.setTextColor(resource.getColor(R.color.color_white))
         }else{
             holder.cvItem.setBackgroundColor(resource.getColor(R.color.color_eeeeee))
-            holder.tvState.setTextColor(resource.getColor(R.color.color_222222))
             holder.tvCountry.setTextColor(resource.getColor(R.color.color_222222))
         }
 
@@ -89,7 +84,6 @@ class VpnListAdapter: RecyclerView.Adapter<VpnListAdapter.VpnVH>() {
         val cvItem = rootView.findViewById<LinearLayout>(R.id.cv_item)
         val ivCountry = rootView.findViewById<ImageView>(R.id.iv_country)
         val tvCountry = rootView.findViewById<TextView>(R.id.tv_country)
-        val tvState = rootView.findViewById<TextView>(R.id.tv_state)
     }
 
 }

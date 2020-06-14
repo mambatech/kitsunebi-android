@@ -18,8 +18,10 @@ import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.exnor.vray.MApplication
 import com.exnor.vray.R
 import com.exnor.vray.bean.ConnectStatus
+import com.exnor.vray.bean.ServersConfig
 import com.exnor.vray.bean.ServersConfigItem
 import com.exnor.vray.bean.VpnItemBean
 import com.exnor.vray.common.Constants
@@ -30,13 +32,19 @@ import com.exnor.vray.gg.GGHelper
 import com.exnor.vray.helper.AEStool
 import com.exnor.vray.helper.AppUpdateHelper
 import com.exnor.vray.helper.VpnConnectMgr
+import com.exnor.vray.net.ApiMgr
 import com.exnor.vray.service.SimpleVpnService
 import com.exnor.vray.storage.Preferences
 import com.exnor.vray.ui.adapter.VpnListAdapter
+import com.exnor.vray.ui.dialog.LoadingDialog
 import com.exnor.vray.ui.dialog.RateDialog
+import com.exnor.vray.utils.GsonUtils
+import com.exnor.vray.utils.Utils
 import com.google.android.gms.ads.reward.RewardItem
 import com.gyf.immersionbar.ImmersionBar
 import com.umeng.analytics.MobclickAgent
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.random.Random
 
@@ -56,6 +64,7 @@ class MainActivity : BaseActivity(),
     private var vpnAdapter: VpnListAdapter? = null
     private var curSelectedPosition = 0
     private var ratingDialog: RateDialog? = null
+    private var loadingDialog: LoadingDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,8 +88,8 @@ class MainActivity : BaseActivity(),
                 starting = true
                 fab.setImageResource(android.R.drawable.ic_media_ff)
                 val intent = VpnService.prepare(this)
-                updateVpnItemStatus(ConnectStatus.CONNECTING)
                 VpnConnectMgr.curStatus = ConnectStatus.CONNECTING
+                updateConnectTxt()
                 if (intent != null) {
                     startActivityForResult(intent, 1)
                 } else {
@@ -97,23 +106,41 @@ class MainActivity : BaseActivity(),
         // APP启动次数+1
         Preferences.enterTimes++
 
-        Log.e("aesTest","ret:${AEStool.decrypt("6368616e676520746869732070617373",
-                "Vp7lkxPzAhX23YctvbyjzPNuFsli6p4cEoysF0Tzg5dxnfj521p7GsCXwbtNA2IoRlnErxmM6AGknNMyAjVsMw==")}")
+//        Log.e("aesTest","ret:${AEStool.decrypt("6368616e676520746869732070617373",
+//                "Zmaqp4FssJFfHmFmY9qcgl55s1Hp2WqFCef7XDy74T6Ixi0dle1uE5on2vhG6Sb54WOALouT4U7U5ERWDGGhZS2yGQmcv38bQzjUTaKTlurzl533r5w6DPOAwzWc5ftWqzrlerPzoraejvBhgyTXUEKd2sXB-6LxVbXFqJ_7IiYFaLlg9rkL4WaUlJb9O-4rcPmn9ZeWdk6hpNl7pVtU7AIzrFF4MrDGUVLCH8_vdUvu4cc7GMcUi1U_eMNfAAo54mcqgaGTPF2xY8jOyxaICV1AkFWxaGsgmWU7qRgGtBkv4saKcP1mGRVlIC8AT22vNRaUCwQO2P_L0GsnQNFDb5W9EsIynb1i8ypb5oyIRtq8OzcMgluVP_LDb8tu-Yqvu2PmKa0htjUMZ4bI0woH4NhNOFUt3t1M5WyMgyC9hFtr6_KLRRkycd1L_CTwwE4C6dcceNOcjY6As9oB8AfKu2TKRbRfqnKQjbfk2ffkM9JuJcgomobjqRE_PWBjaKmmjcZRk4LpDk7LTF1o2Bl76fNTM-HH2ZL9mD7_reUDZw4EVpcyp6-AKf-wCdjin4UZn2ML56SsxBbk1AjjnnQMdHw2G6B29ttpaB1xHGhVk_Ki7bTPvd8Ap8qa8OAL9c2eUffElkueD3bGQVml1w7vahHdD786CnU8tzj2ilOtEsmc-dvvMYy6PNy6o3I9YSDeQVduaFuBhS-9Ysuc-W06UhlDE4WEidXzXujDgjlTQ1c=")}")
     }
 
-    private fun loadServerConfig(){
+    private fun loadServerConfig() {
+        ApiMgr.updateConfigApi()
+                .getServerConfig(Utils.getVersionCode(this), MApplication.sIns.resources.configuration.locale.country)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ it ->
+                    if (it.code == 0) {
+                        try {
+                            val plainTxt = AEStool.decrypt(it.rawConfig)
+                            val configs = GsonUtils.fromJson(plainTxt, ServersConfig::class.java)
+                            parseServerConfig(configs.serversConfig)
+                        } catch (e: Exception) {
+                            vpnAdapter?.updateDatas(initLocalData())
+                        }
 
-
+                    }
+                },
+                        { err ->
+                            err.printStackTrace()
+                            vpnAdapter?.updateDatas(initLocalData())
+                        })
     }
 
-    private fun parseServerConfig(configs: List<ServersConfigItem>){
+    private fun parseServerConfig(configs: List<ServersConfigItem>) {
         val newConfigList = mutableListOf<VpnItemBean>()
-        for (item in configs){
-            var tmp0 = Constants.BASE_CONFIG.replace(Constants.KEY_IP,item.ip)
-            tmp0 = tmp0.replace(Constants.KEY_PORT,"\"port\":${item.port}")
-            tmp0 = tmp0.replace(Constants.KEY_UUID,item.uuid)
-            newConfigList.add(VpnItemBean(ConnectStatus.STOPPED,R.drawable.united_nations,
-                    getString(R.string.str_united_nation),false,tmp0))
+        for (item in configs) {
+            var tmp0 = Constants.BASE_CONFIG.replace(Constants.KEY_IP, item.IP)
+            tmp0 = tmp0.replace(Constants.KEY_PORT, "\"port\":${item.Port}")
+            tmp0 = tmp0.replace(Constants.KEY_UUID, item.UUID)
+            newConfigList.add(VpnItemBean(ConnectStatus.STOPPED, item.icon_url,
+                    item.country_name, false, tmp0))
         }
 
         var randomIndex = 0
@@ -123,55 +150,38 @@ class MainActivity : BaseActivity(),
             val selectBean = newConfigList[randomIndex]
             selectBean.isSelected = true
             VpnConnectMgr.curVpnConfig = selectBean.configJson
-
-        }else{
-            randomIndex = VpnConnectMgr.currentSelectedPosition
         }
 
-        val selectBean = newConfigList[randomIndex]
-        selectBean.isSelected = true
-        selectBean.status = VpnConnectMgr.curStatus
-        VpnConnectMgr.curVpnConfig = selectBean.configJson
-
+        dismissLoadingDialog()
         vpnAdapter?.updateDatas(newConfigList)
-        Toast.makeText(this,getString(R.string.lines_updates),Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.lines_updates), Toast.LENGTH_SHORT).show()
     }
 
     private fun loadGGAndShow() {
         GGDelegate.loadRewardGG()
         GGDelegate.loadMainPageGGAndShow(fl_ad_container)
-        // 仅当双数轮进入APP的时候，展示进入广告
-        if (Preferences.enterTimes % 2 == 1) {
+        // 仅当3的倍数数轮进入APP的时候，展示进入广告
+        if (Preferences.enterTimes % 3 == 2) {
             GGDelegate.loadEnterFullScreenGGAndShow(this)
         }
     }
 
     override fun onItemClicked(position: Int) {
         val dataList = vpnAdapter?.dataList
-        if (dataList?.isNotEmpty() == true){
+        if (dataList?.isNotEmpty() == true) {
             VpnConnectMgr.curVpnConfig = dataList[position].configJson
-            for (i in 0 until dataList.size){
+            for (i in 0 until dataList.size) {
                 val bean = dataList[i]
-                if (i == position){
+                if (i == position) {
                     curSelectedPosition = i
                     bean.isSelected = true
-                }else{
+                } else {
                     bean.isSelected = false
                 }
             }
 
             vpnAdapter?.notifyDataSetChanged()
         }
-    }
-
-    private fun updateVpnItemStatus(@ConnectStatus status: Int) {
-        val dataList = vpnAdapter?.dataList
-        if (dataList?.isNotEmpty() == true) {
-            val bean = dataList[curSelectedPosition]
-            bean.status = status
-        }
-
-        vpnAdapter?.notifyItemChanged(curSelectedPosition)
     }
 
     private fun updateUI() {
@@ -181,16 +191,38 @@ class MainActivity : BaseActivity(),
         rv_list.adapter = vpnAdapter
         vpnAdapter?.itemClickListener = this
         vpnAdapter?.updateDatas(initLocalData())
+        loadServerConfig()
+        updateConnectTxt()
     }
 
-    private fun initLocalData(): List<VpnItemBean>{
-        val singaporeBean1 = VpnItemBean(ConnectStatus.STOPPED,R.drawable.ic_singapore,
-                getString(R.string.str_singapore_1),false,Constants.SINGAPORE_CONFIG_1)
+    private fun updateConnectTxt() {
+        when (VpnConnectMgr.curStatus) {
+            ConnectStatus.CONNECTED -> {
+                tv_state_txt.text = getString(R.string.state_connected)
+            }
 
-        val singaporeBean2 = VpnItemBean(ConnectStatus.STOPPED,R.drawable.ic_singapore,
-                getString(R.string.str_singapore_2),false,Constants.SINGAPORE_CONFIG_2)
+            ConnectStatus.CONNECTING -> {
+                tv_state_txt.text = getString(R.string.state_connecting)
+            }
 
-        val beanList = arrayListOf(singaporeBean1,singaporeBean2)
+            ConnectStatus.STOPPED -> {
+                tv_state_txt.text = getString(R.string.state_stopped)
+            }
+        }
+    }
+
+    private fun initLocalData(): List<VpnItemBean> {
+        val japanBean1 = VpnItemBean(ConnectStatus.STOPPED, "R.drawable.ic_japan",
+                getString(R.string.str_japan_1), false, Constants.JAPAN_CONFIG_1)
+        val singaporeBean1 = VpnItemBean(ConnectStatus.STOPPED, "R.drawable.ic_singapore",
+                getString(R.string.str_singapore_1), false, Constants.SINGAPORE_CONFIG_1)
+
+        val japanBean2 = VpnItemBean(ConnectStatus.STOPPED, "R.drawable.ic_japan",
+                getString(R.string.str_japan_2), false, Constants.JAPAN_CONFIG_2)
+        val singaporeBean2 = VpnItemBean(ConnectStatus.STOPPED, "R.drawable.ic_singapore",
+                getString(R.string.str_singapore_2), false, Constants.SINGAPORE_CONFIG_2)
+
+        val beanList = arrayListOf(japanBean1, singaporeBean1, japanBean2, singaporeBean2)
         var randomIndex = 0
         if (VpnConnectMgr.curStatus != ConnectStatus.CONNECTED) {
             randomIndex = Random.nextInt(beanList.size)
@@ -199,19 +231,12 @@ class MainActivity : BaseActivity(),
             selectBean.isSelected = true
             VpnConnectMgr.curVpnConfig = selectBean.configJson
 
-        }else{
-            randomIndex = VpnConnectMgr.currentSelectedPosition
         }
-
-        val selectBean = beanList[randomIndex]
-        selectBean.isSelected = true
-        selectBean.status = VpnConnectMgr.curStatus
-        VpnConnectMgr.curVpnConfig = selectBean.configJson
 
         return beanList
     }
 
-    private fun registerReceiver(){
+    private fun registerReceiver() {
         registerReceiver(broadcastReceiver, IntentFilter("vpn_stopped"))
         registerReceiver(broadcastReceiver, IntentFilter("vpn_started"))
         registerReceiver(broadcastReceiver, IntentFilter("vpn_start_err"))
@@ -269,7 +294,7 @@ class MainActivity : BaseActivity(),
         mBuilder.setContentIntent(contentIntent)
 
         // Builds the notification and issues it.
-        Log.e("sentNotification","sent it...")
+        Log.e("sentNotification", "sent it...")
         mNotificationManager?.notify(mNotificationId, mBuilder.build())
     }
 
@@ -278,7 +303,7 @@ class MainActivity : BaseActivity(),
             when (intent?.action) {
                 "vpn_stopped" -> {
                     VpnConnectMgr.curStatus = ConnectStatus.STOPPED
-                    updateVpnItemStatus(ConnectStatus.STOPPED)
+                    updateConnectTxt()
                     running = false
                     stopping = false
                     fab.setImageResource(android.R.drawable.ic_media_play)
@@ -287,7 +312,7 @@ class MainActivity : BaseActivity(),
                 }
                 "vpn_started" -> {
                     VpnConnectMgr.curStatus = ConnectStatus.CONNECTED
-                    updateVpnItemStatus(ConnectStatus.CONNECTED)
+                    updateConnectTxt()
                     running = true
                     starting = false
                     fab.setImageResource(android.R.drawable.ic_media_pause)
@@ -298,7 +323,7 @@ class MainActivity : BaseActivity(),
                 }
                 "vpn_start_err" -> {
                     VpnConnectMgr.curStatus = ConnectStatus.STOPPED
-                    updateVpnItemStatus(ConnectStatus.STOPPED)
+                    updateConnectTxt()
                     running = false
                     starting = false
                     fab.setImageResource(android.R.drawable.ic_media_play)
@@ -308,7 +333,7 @@ class MainActivity : BaseActivity(),
                 }
                 "vpn_start_err_dns" -> {
                     VpnConnectMgr.curStatus = ConnectStatus.STOPPED
-                    updateVpnItemStatus(ConnectStatus.STOPPED)
+                    updateConnectTxt()
                     running = false
                     starting = false
                     fab.setImageResource(android.R.drawable.ic_media_play)
@@ -318,7 +343,7 @@ class MainActivity : BaseActivity(),
                 }
                 "vpn_start_err_config" -> {
                     VpnConnectMgr.curStatus = ConnectStatus.STOPPED
-                    updateVpnItemStatus(ConnectStatus.STOPPED)
+                    updateConnectTxt()
                     running = false
                     starting = false
                     fab.setImageResource(android.R.drawable.ic_media_play)
@@ -329,7 +354,7 @@ class MainActivity : BaseActivity(),
                 "pong" -> {
                     fab.setImageResource(android.R.drawable.ic_media_pause)
                     running = true
-                    Preferences.putBool( getString(R.string.vpn_is_running), true)
+                    Preferences.putBool(getString(R.string.vpn_is_running), true)
                 }
             }
         }
@@ -367,7 +392,23 @@ class MainActivity : BaseActivity(),
             GGDelegate.showRewardGG(this)
         }
 
-        Preferences.putInt(Preferences.KEY_CONNECT_TIME,connectTimes + 1)
+        Preferences.putInt(Preferences.KEY_CONNECT_TIME, connectTimes + 1)
+    }
+
+    private fun dismissLoadingDialog() {
+        loadingDialog?.dismiss()
+        loadingDialog = null
+    }
+
+    private fun showLoadingDialog(isCancelable: Boolean) {
+        if (loadingDialog == null) {
+            loadingDialog = LoadingDialog()
+            loadingDialog?.isCancelable = isCancelable
+        }
+
+        if (loadingDialog?.isAdded == false) {
+            loadingDialog?.show(supportFragmentManager, "LOADING_DIALOG")
+        }
     }
 
     @TargetApi(26)

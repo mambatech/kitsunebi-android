@@ -11,7 +11,7 @@ created by edison 2020/3/16
  //TODO configJsonStr需要改成实体类
  */
 data class VpnItemBean(@ConnectStatus var status: Int,
-                       @DrawableRes val resCountry: Int,
+                       val country_url: String,
                        val countryName: String,
                        var isSelected: Boolean,
                        val configJson: String) {

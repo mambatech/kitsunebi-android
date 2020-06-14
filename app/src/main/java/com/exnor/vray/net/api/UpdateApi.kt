@@ -16,5 +16,6 @@ interface UpdateApi {
 
     //加密的vpn配置
     @GET("servers_config")
-    fun getServerConfig(@Query("version") version: Int): Observable<RawServerConfig>
+    fun getServerConfig(@Query("version") version: Int,
+                        @Query("country") country: String): Observable<RawServerConfig>
 }
