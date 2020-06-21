@@ -48,8 +48,6 @@ class VpnListAdapter: RecyclerView.Adapter<VpnListAdapter.VpnVH>() {
         val context = holder.itemView.context
         val resource = context.resources
         val itemBean = dataList[position]
-        Log.e("vpnIcon","url:${itemBean.country_url}")
-        Log.e("vpnIcon","name:${itemBean.countryName}")
         Glide.with(context)
                 .load(itemBean.country_url)
                 .error(R.drawable.united_nations)

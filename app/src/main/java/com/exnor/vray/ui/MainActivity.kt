@@ -173,8 +173,6 @@ class MainActivity : BaseActivity(),
         val dataList = vpnAdapter?.dataList
         if (dataList?.isNotEmpty() == true) {
             VpnConnectMgr.curVpnConfig = dataList[position].configJson
-            Log.e("itemclicked","port:${dataList[position].configJson}")
-
             for (i in 0 until dataList.size) {
                 val bean = dataList[i]
                 if (i == position) {
