@@ -116,22 +116,17 @@ class MainActivity : BaseActivity(),
                     if (it.code == 0) {
                         try {
                             val plainTxt = AEStool.decrypt(it.rawConfig)
-//                            Log.e("loadServerConfig","plainTxt::$plainTxt")
                             val type= object : TypeToken<List<ServersConfigItem?>?>() {}.type
                             val configs = GsonUtils.fromJson<List<ServersConfigItem>>(plainTxt,type)
                             parseServerConfig(configs)
                         } catch (e: Exception) {
-//                            Log.e("loadServerConfig","parseException")
                             vpnAdapter?.updateDatas(initLocalData())
                         }
 
                     }
-
-//                    Log.e("loadServerConfig","parseException:code:${it.code}")
                 },
                         { err ->
                             err.printStackTrace()
-//                            Log.e("loadServerConfig","fail:${err.printStackTrace()}")
                             vpnAdapter?.updateDatas(initLocalData())
                         })
     }

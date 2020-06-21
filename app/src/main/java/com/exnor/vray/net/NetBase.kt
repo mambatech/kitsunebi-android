@@ -18,9 +18,9 @@ object NetBase {
 
 
     private val okHttpClient = OkHttpClient.Builder()
-            .connectTimeout(5, TimeUnit.SECONDS)
-            .readTimeout(5, TimeUnit.SECONDS)
-            .writeTimeout(5, TimeUnit.SECONDS)
+            .connectTimeout(7, TimeUnit.SECONDS)
+            .readTimeout(7, TimeUnit.SECONDS)
+            .writeTimeout(7, TimeUnit.SECONDS)
             .build()
 
     private val retrofit = Retrofit.Builder()

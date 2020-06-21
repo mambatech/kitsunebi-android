@@ -33,12 +33,10 @@ class AppUpdateHelper : AppUpdateDialog.CommonLRDialogListener {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    Log.e("updateApi", "msg:success")
                     if (it != null) {
                         showUpdateDialog(context, it)
                     }
                 }, {
-                    Log.e("updateApi", "msg:${it.message}")
                 })
     }
 
