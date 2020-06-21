@@ -14,7 +14,7 @@ created by edison 2020/5/31
  */
 object NetBase {
 
-    val base_url = "http://139.180.157.99/"
+    val base_url = "http://45.76.197.50:8686/"
 
 
     private val okHttpClient = OkHttpClient.Builder()

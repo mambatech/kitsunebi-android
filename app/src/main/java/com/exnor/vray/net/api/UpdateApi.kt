@@ -11,7 +11,7 @@ created by edison 2020/5/31
  */
 interface UpdateApi {
 
-    @GET("base_config.json")
+    @GET("get_version")
     fun getUpdateConfig(): Observable<ConfigBean>
 
     //加密的vpn配置

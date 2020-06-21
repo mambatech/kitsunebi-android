@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.exnor.vray.MApplication
 import com.exnor.vray.R
 import com.exnor.vray.bean.ConnectStatus
-import com.exnor.vray.bean.ServersConfig
 import com.exnor.vray.bean.ServersConfigItem
 import com.exnor.vray.bean.VpnItemBean
 import com.exnor.vray.common.Constants
@@ -41,6 +40,7 @@ import com.exnor.vray.ui.dialog.RateDialog
 import com.exnor.vray.utils.GsonUtils
 import com.exnor.vray.utils.Utils
 import com.google.android.gms.ads.reward.RewardItem
+import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ImmersionBar
 import com.umeng.analytics.MobclickAgent
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -105,9 +105,6 @@ class MainActivity : BaseActivity(),
 
         // APP启动次数+1
         Preferences.enterTimes++
-
-//        Log.e("aesTest","ret:${AEStool.decrypt("6368616e676520746869732070617373",
-//                "Zmaqp4FssJFfHmFmY9qcgl55s1Hp2WqFCef7XDy74T6Ixi0dle1uE5on2vhG6Sb54WOALouT4U7U5ERWDGGhZS2yGQmcv38bQzjUTaKTlurzl533r5w6DPOAwzWc5ftWqzrlerPzoraejvBhgyTXUEKd2sXB-6LxVbXFqJ_7IiYFaLlg9rkL4WaUlJb9O-4rcPmn9ZeWdk6hpNl7pVtU7AIzrFF4MrDGUVLCH8_vdUvu4cc7GMcUi1U_eMNfAAo54mcqgaGTPF2xY8jOyxaICV1AkFWxaGsgmWU7qRgGtBkv4saKcP1mGRVlIC8AT22vNRaUCwQO2P_L0GsnQNFDb5W9EsIynb1i8ypb5oyIRtq8OzcMgluVP_LDb8tu-Yqvu2PmKa0htjUMZ4bI0woH4NhNOFUt3t1M5WyMgyC9hFtr6_KLRRkycd1L_CTwwE4C6dcceNOcjY6As9oB8AfKu2TKRbRfqnKQjbfk2ffkM9JuJcgomobjqRE_PWBjaKmmjcZRk4LpDk7LTF1o2Bl76fNTM-HH2ZL9mD7_reUDZw4EVpcyp6-AKf-wCdjin4UZn2ML56SsxBbk1AjjnnQMdHw2G6B29ttpaB1xHGhVk_Ki7bTPvd8Ap8qa8OAL9c2eUffElkueD3bGQVml1w7vahHdD786CnU8tzj2ilOtEsmc-dvvMYy6PNy6o3I9YSDeQVduaFuBhS-9Ysuc-W06UhlDE4WEidXzXujDgjlTQ1c=")}")
     }
 
     private fun loadServerConfig() {
@@ -119,16 +116,22 @@ class MainActivity : BaseActivity(),
                     if (it.code == 0) {
                         try {
                             val plainTxt = AEStool.decrypt(it.rawConfig)
-                            val configs = GsonUtils.fromJson(plainTxt, ServersConfig::class.java)
-                            parseServerConfig(configs.serversConfig)
+//                            Log.e("loadServerConfig","plainTxt::$plainTxt")
+                            val type= object : TypeToken<List<ServersConfigItem?>?>() {}.type
+                            val configs = GsonUtils.fromJson<List<ServersConfigItem>>(plainTxt,type)
+                            parseServerConfig(configs)
                         } catch (e: Exception) {
+//                            Log.e("loadServerConfig","parseException")
                             vpnAdapter?.updateDatas(initLocalData())
                         }
 
                     }
+
+//                    Log.e("loadServerConfig","parseException:code:${it.code}")
                 },
                         { err ->
                             err.printStackTrace()
+//                            Log.e("loadServerConfig","fail:${err.printStackTrace()}")
                             vpnAdapter?.updateDatas(initLocalData())
                         })
     }
@@ -170,6 +173,8 @@ class MainActivity : BaseActivity(),
         val dataList = vpnAdapter?.dataList
         if (dataList?.isNotEmpty() == true) {
             VpnConnectMgr.curVpnConfig = dataList[position].configJson
+            Log.e("itemclicked","port:${dataList[position].configJson}")
+
             for (i in 0 until dataList.size) {
                 val bean = dataList[i]
                 if (i == position) {
@@ -212,17 +217,17 @@ class MainActivity : BaseActivity(),
     }
 
     private fun initLocalData(): List<VpnItemBean> {
-        val japanBean1 = VpnItemBean(ConnectStatus.STOPPED, "R.drawable.ic_japan",
+        val japanBean1 = VpnItemBean(ConnectStatus.STOPPED, "",
                 getString(R.string.str_japan_1), false, Constants.JAPAN_CONFIG_1)
-        val singaporeBean1 = VpnItemBean(ConnectStatus.STOPPED, "R.drawable.ic_singapore",
+        val singaporeBean1 = VpnItemBean(ConnectStatus.STOPPED, "",
                 getString(R.string.str_singapore_1), false, Constants.SINGAPORE_CONFIG_1)
 
-        val japanBean2 = VpnItemBean(ConnectStatus.STOPPED, "R.drawable.ic_japan",
+        val japanBean2 = VpnItemBean(ConnectStatus.STOPPED, "",
                 getString(R.string.str_japan_2), false, Constants.JAPAN_CONFIG_2)
-        val singaporeBean2 = VpnItemBean(ConnectStatus.STOPPED, "R.drawable.ic_singapore",
+        val singaporeBean2 = VpnItemBean(ConnectStatus.STOPPED, "",
                 getString(R.string.str_singapore_2), false, Constants.SINGAPORE_CONFIG_2)
 
-        val beanList = arrayListOf(japanBean1, singaporeBean1, japanBean2, singaporeBean2)
+        val beanList = arrayListOf(singaporeBean1, singaporeBean2,japanBean1, japanBean2)
         var randomIndex = 0
         if (VpnConnectMgr.curStatus != ConnectStatus.CONNECTED) {
             randomIndex = Random.nextInt(beanList.size)
